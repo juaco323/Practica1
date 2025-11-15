@@ -2,17 +2,6 @@
   "name": "FlujoDeReservasUpdated",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        352,
-        96
-      ],
-      "id": "ba672570-726a-464d-b27f-aacb07178cb5",
-      "name": "Merge"
-    },
-    {
       "parameters": {
         "pollTimes": {
           "item": [
@@ -41,17 +30,28 @@
       "type": "n8n-nodes-base.googleSheetsTrigger",
       "typeVersion": 1,
       "position": [
-        -480,
-        80
+        -2288,
+        544
       ],
-      "id": "8683897c-8809-4354-9266-7c34036ab5f8",
+      "id": "ac63537c-c48e-4644-909c-5c6527f29e83",
       "name": "DatosFormulario",
       "credentials": {
         "googleSheetsTriggerOAuth2Api": {
-          "id": "maKrRfacqdh6ph3w",
-          "name": "Google Sheets Trigger account 3"
+          "id": "fyAtwrA6kbBpaYd0",
+          "name": "Google Sheets Trigger account 2"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2096,
+        720
+      ],
+      "id": "00f5e0ac-41f0-4220-af35-7082024e3dd4",
+      "name": "Merge"
     },
     {
       "parameters": {
@@ -60,10 +60,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -304,
-        80
+        -2752,
+        704
       ],
-      "id": "aca66362-2006-4574-a695-5689f75c9658",
+      "id": "45a1c71d-f825-4b4c-a693-03256c3d520f",
       "name": "DatosCode"
     },
     {
@@ -218,15 +218,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        32,
-        -80
+        -2416,
+        544
       ],
-      "id": "e022ab2c-c7e4-4ecd-80b8-c80cc6b67aba",
+      "id": "bcaaae7e-ce5c-49e6-9f41-12bb33e51bba",
       "name": "guardarRegistro",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "MHzdLSLHJdi4cvLu",
-          "name": "Google Sheets account 3"
+          "id": "YW4UkII7eEBygXxR",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -251,15 +251,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        192,
-        -80
+        -2256,
+        544
       ],
-      "id": "95d0ed5d-38c8-4a21-af1d-1dc1fa22485b",
+      "id": "215153c4-513b-42ef-9270-75e5eb29ce38",
       "name": "leerSalas",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "MHzdLSLHJdi4cvLu",
-          "name": "Google Sheets account 3"
+          "id": "YW4UkII7eEBygXxR",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -270,10 +270,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        496,
-        96
+        -1952,
+        720
       ],
-      "id": "7cbb4618-9a84-44d0-b2c6-fd29d4118b99",
+      "id": "773c3c6d-4a23-49b9-9fe7-949d633be120",
       "name": "filtrarCapacidad"
     },
     {
@@ -283,10 +283,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        672,
-        96
+        -1776,
+        720
       ],
-      "id": "d094e223-b3a0-45d7-8bb7-a9795a649ec4",
+      "id": "79ae0442-1c52-4ada-b9cb-9fb95643686d",
       "name": "Loop Over Items"
     },
     {
@@ -305,16 +305,16 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        896,
-        112
+        -1552,
+        736
       ],
-      "id": "8f6ebbae-6eda-4bed-babc-c48a4ce96362",
+      "id": "0dc44b5b-25b3-4416-abac-743413289424",
       "name": "Get many events",
       "alwaysOutputData": true,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "2qOfqUx3nAOJHZKo",
-          "name": "Google Calendar account 4"
+          "id": "CXCaPQ09gSVwizfD",
+          "name": "Google Calendar account"
         }
       }
     },
@@ -325,10 +325,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1184,
-        208
+        -1264,
+        832
       ],
-      "id": "6088243c-2f02-463c-9aa1-4fd2596946df",
+      "id": "400a32f3-3691-471c-8983-a09313c92d34",
       "name": "Code in JavaScript"
     },
     {
@@ -359,10 +359,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1344,
-        256
+        -1104,
+        880
       ],
-      "id": "2712c971-b3db-42e4-93e6-e9644c50d0e9",
+      "id": "0a6f3021-ebce-43d7-b399-b56171f756f5",
       "name": "If"
     },
     {
@@ -370,10 +370,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1056,
-        208
+        -1392,
+        832
       ],
-      "id": "d5d2494f-dc3c-4ecb-be51-af17047d0d78",
+      "id": "cccb1c95-602e-4a68-8c95-c0e5c6fff36b",
       "name": "Merge1"
     },
     {
@@ -381,10 +381,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1728,
-        176
+        -720,
+        800
       ],
-      "id": "f8c0989d-becf-4719-8a7b-91fec4122c2c",
+      "id": "1a4f2cff-6cc3-4677-87fd-822c33673676",
       "name": "Merge2"
     },
     {
@@ -397,16 +397,16 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        2144,
-        176
+        -304,
+        800
       ],
-      "id": "514392be-8a19-41dc-b91b-ebb0d2e37f44",
+      "id": "0ad4f8e6-8b3a-44a6-a0f4-0b27ffad584a",
       "name": "Send a message",
       "webhookId": "edd272d8-07b3-46ee-80c5-d70aeb9e2f6c",
       "credentials": {
         "gmailOAuth2": {
-          "id": "yb01fV9hvriXxDIk",
-          "name": "Gmail account 4"
+          "id": "ggN6VexbBbATMvgY",
+          "name": "Gmail account"
         }
       },
       "onError": "continueRegularOutput"
@@ -573,15 +573,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2352,
-        176
+        -96,
+        800
       ],
-      "id": "44dc33ec-2e0f-4017-9b3e-5dc02668faef",
+      "id": "97730ec7-7b29-4197-98ef-57f54dea30f9",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "MHzdLSLHJdi4cvLu",
-          "name": "Google Sheets account 3"
+          "id": "YW4UkII7eEBygXxR",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -600,16 +600,16 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1008,
-        -272
+        -1440,
+        352
       ],
-      "id": "be8b8254-1a6d-4ad0-bd4f-9beb37e9d97b",
+      "id": "bdcc173b-fdd1-417c-8c09-09e65358f3bc",
       "name": "Get availability in a calendar",
       "alwaysOutputData": true,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "2qOfqUx3nAOJHZKo",
-          "name": "Google Calendar account 4"
+          "id": "CXCaPQ09gSVwizfD",
+          "name": "Google Calendar account"
         }
       }
     },
@@ -641,10 +641,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1408,
-        -176
+        -1040,
+        448
       ],
-      "id": "087b23ed-95ab-4b88-9240-a0269ed6e898",
+      "id": "cf1000e5-91c9-450c-86f8-65cbd15d6ca0",
       "name": "If1",
       "alwaysOutputData": false
     },
@@ -658,16 +658,16 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1808,
-        -464
+        -640,
+        160
       ],
-      "id": "8a738ac6-5c1a-4a97-baeb-5ceb245c428b",
+      "id": "06c0992d-294a-45d8-8ce7-b336f158ee09",
       "name": "Send a message1",
       "webhookId": "417bd6f9-2840-4bdc-882e-e032af660af2",
       "credentials": {
         "gmailOAuth2": {
-          "id": "yb01fV9hvriXxDIk",
-          "name": "Gmail account 4"
+          "id": "ggN6VexbBbATMvgY",
+          "name": "Gmail account"
         }
       }
     },
@@ -680,10 +680,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1232,
-        -176
+        -1216,
+        448
       ],
-      "id": "e6538be5-b93c-4b45-999c-af760b48289a",
+      "id": "4f30f8ba-d17b-4456-9f0d-0e3e67806026",
       "name": "Merge3"
     },
     {
@@ -694,10 +694,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1008,
-        -112
+        -1440,
+        512
       ],
-      "id": "9c0a3aa7-910a-47c8-be06-af93132f00b3",
+      "id": "fdb19875-5073-4313-b17d-c65dfbd110b8",
       "name": "SET1"
     },
     {
@@ -708,10 +708,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        896,
-        288
+        -1552,
+        912
       ],
-      "id": "2e015ae8-e9d8-45ec-aa1f-fb0773d5e4ff",
+      "id": "a84c132a-4e31-452e-a553-ddb9db14b5f1",
       "name": "SET"
     },
     {
@@ -722,23 +722,23 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1552,
-        224
+        -896,
+        848
       ],
-      "id": "e6ce99a2-457e-4202-b4c1-4a0e8d780ca0",
+      "id": "438bd56d-3036-4e8e-851c-81f613e051f1",
       "name": "SET2"
     },
     {
       "parameters": {
-        "jsCode": "// n8n Code/Function: GenerarAlternativasDesdeLoopDone (parche flex + meta + correo)\n// Soporta: startIso/endIso, calendarId, room | roomName\n// Propaga meta para el HTML/Webhook: descripcion/description, correo, area, ReservID, nombre, participantes.\n\nconst DEFAULT_MIN_MINUTES = 30;\nconst DEFAULT_MAX_MINUTES = 120;\nconst OFFSETS_MINUTES = [-180, -120, -60, 60, 120, 180];\nconst MAX_OPTIONS_PER_ROOM = 8;\n\nconst STEP_LABEL = (m)=> (m<0? `${Math.abs(m)} min antes` : `${m} min después`);\n\nfunction toDate(x) {\n  if (!x) return null;\n  if (typeof x === 'object' && (x.date || x.dateTime)) {\n    return new Date(x.dateTime || x.date);\n  }\n  return new Date(x);\n}\nfunction toISO(dt) { return new Date(dt).toISOString(); }\nfunction clampDuration(mins, minAllowed, maxAllowed) {\n  return Math.max(minAllowed, Math.min(maxAllowed, mins));\n}\nfunction overlaps(aStart, aEnd, bStart, bEnd) {\n  return (aStart < bEnd) && (bStart < aEnd);\n}\nfunction sameDay(d1, d2) {\n  return d1.getFullYear() === d2.getFullYear() &&\n         d1.getMonth() === d2.getMonth() &&\n         d1.getDate() === d2.getDate();\n}\nfunction shiftMinutes(date, mins) { const d = new Date(date); d.setMinutes(d.getMinutes()+mins); return d; }\nfunction addDays(date, days) { const d = new Date(date); d.setDate(d.getDate()+days); return d; }\n\nfunction normalizeBusyIntervals(j) {\n  if (Array.isArray(j.busyIntervals)) {\n    return j.busyIntervals\n      .map(b => ({ start: toDate(b.start), end: toDate(b.end) }))\n      .filter(b => b.start && b.end && b.start < b.end);\n  }\n  const events = Array.isArray(j.events) ? j.events : [];\n  return events\n    .map(ev => {\n      const s = toDate(ev.start?.dateTime || ev.start?.date);\n      const e = toDate(ev.end?.dateTime || ev.end?.date);\n      return (s && e && s < e) ? { start: s, end: e } : null;\n    })\n    .filter(Boolean);\n}\n\n// ---- helpers correo ----\nfunction getRequesterEmail(localJson) {\n  // 1) del propio ítem\n  let mail = localJson.correo || localJson.email || localJson.requesterEmail || localJson.solicitanteEmail;\n  // 2) intenta leer del nodo de formulario si existe (ajusta el nombre si es distinto)\n  if (!mail) {\n    try {\n      const form = $items('DatosFormulario', 0, 0);\n      if (form && form.json) {\n        mail = form.json.correo || form.json.email || form.json.mail;\n      }\n    } catch (e) { /* si no existe el nodo, no pasa nada */ }\n  }\n  // 3) limpieza simple\n  if (typeof mail === 'string') {\n    mail = mail.trim();\n    if (mail === '') mail = undefined;\n  }\n  return mail;\n}\n\nconst out = [];\n\nfor (const item of items) {\n  const j = item.json || {};\n\n  // ---- Adaptadores de campos (flex) ----\n  const roomId   = j.roomId || j.calendarId || j.calendar || j.calendario || j.calendarid;\n  const roomName = j.roomName || j.room || j.name || String(roomId || 'Sala');\n\n  // ---- Meta a propagar (tal como viene en tu flujo) ----\n  const descripcion  = j.descripcion || j.description || '';          // ej: \"Área: Informatica\"\n  const area         = j.area || j.Area || j['área'] || j['Área'] || j.departamento || j.Departamento || '';\n  const ReservID     = j.ReservID || j.reservationId || j.idReserva || j.IDReserva || j.id || j.ReservaID || '';\n  const nombre       = j.nombre || j.solicitanteNombre || j.Nombre || '';\n  const participantes= j.participantes || j.Participantes || j.asistentes || j.participants || '';\n\n  // correo del solicitante (se propagará en la salida)\n  const correo = getRequesterEmail(j) || j.correo || '';\n\n  let reqStart = null, reqEnd = null;\n\n  // 1) request.start/end (si existiera)\n  if (j.request && (j.request.start || j.request.end)) {\n    reqStart = toDate(j.request.start);\n    reqEnd   = toDate(j.request.end);\n  }\n  // 2) requestStart/requestEnd\n  if (!reqStart && j.requestStart) reqStart = toDate(j.requestStart);\n  if (!reqEnd   && j.requestEnd)   reqEnd   = toDate(j.requestEnd);\n  // 3) startIso/endIso\n  if (!reqStart && j.startIso) reqStart = toDate(j.startIso);\n  if (!reqEnd   && j.endIso)   reqEnd   = toDate(j.endIso);\n  // 4) start/end directos\n  if (!reqStart && j.start) reqStart = toDate(j.start);\n  if (!reqEnd   && j.end)   reqEnd   = toDate(j.end);\n\n  // Si no hay hora o no hay sala, saltamos\n  if (!reqStart || !reqEnd || !(reqStart < reqEnd) || !roomId) {\n    continue;\n  }\n\n  // Restricciones\n  const minMinutes = Number.isFinite(Number(j.constraints?.minMinutes))\n    ? Number(j.constraints.minMinutes) : DEFAULT_MIN_MINUTES;\n  const maxMinutes = Number.isFinite(Number(j.constraints?.maxMinutes))\n    ? Number(j.constraints.maxMinutes) : DEFAULT_MAX_MINUTES;\n\n  const requestedDurationMin = Math.round((reqEnd - reqStart) / 60000);\n  const slotDurationMin = clampDuration(requestedDurationMin, minMinutes, maxMinutes);\n\n  // Busy conocido (si no hay, lista vacía → luego verificas con GCal)\n  const busy = normalizeBusyIntervals(j);\n\n  // Candidatos mismo día\n  const sameDayCandidates = [];\n  for (const off of OFFSETS_MINUTES) {\n    const s = shiftMinutes(reqStart, off);\n    if (!sameDay(s, reqStart)) continue;\n    const e = shiftMinutes(s, slotDurationMin);\n    sameDayCandidates.push({ start: s, end: e, offset: off, dayShift: 0 });\n  }\n\n  // Candidatos +1 día\n  const nextDayBase = addDays(reqStart, 1);\n  const nextDayCandidates = [];\n  for (const off of OFFSETS_MINUTES) {\n    const s = shiftMinutes(nextDayBase, off);\n    const e = shiftMinutes(s, slotDurationMin);\n    nextDayCandidates.push({ start: s, end: e, offset: off, dayShift: 1 });\n  }\n\n  const allCandidates = [...sameDayCandidates, ...nextDayCandidates];\n\n  // Filtrar contra busy (si busy=[], pasan todos)\n  const freeOptions = [];\n  outer:\n  for (const c of allCandidates) {\n    for (const b of busy) {\n      if (overlaps(c.start, c.end, b.start, b.end)) continue outer;\n    }\n    freeOptions.push(c);\n    if (freeOptions.length >= MAX_OPTIONS_PER_ROOM) break;\n  }\n\n  for (const opt of freeOptions) {\n    const prettyLabel = (opt.dayShift === 0)\n      ? `Mismo día, ${STEP_LABEL(opt.offset)}`\n      : `+1 día, ${STEP_LABEL(opt.offset)}`;\n\n    out.push({\n      json: {\n        // ---- Identificación de sala ----\n        calendarId: roomId,\n        roomId,\n        roomName,\n\n        // ---- Meta propagada (para HTML/Webhook) ----\n        descripcion,\n        description: descripcion,                 // alias en inglés\n        area,\n        ReservID,\n        reservationId: ReservID,                  // alias\n        nombre,\n        solicitanteNombre: nombre,                // alias\n        participantes,\n\n        // ---- Contacto ----\n        correo,\n        to: correo,                               // alias por comodidad\n\n        // ---- Opción propuesta ----\n        option: {\n          start: toISO(opt.start),\n          end: toISO(opt.end),\n          minutes: slotDurationMin,\n          label: prettyLabel,\n          offsetsMinutes: opt.offset,\n          dayShift: opt.dayShift,\n        },\n\n        // ---- Datos de la solicitud original ----\n        request: {\n          start: toISO(reqStart),\n          end: toISO(reqEnd),\n          requestedMinutes: requestedDurationMin,\n          appliedMinutes: slotDurationMin,\n          minMinutes,\n          maxMinutes,\n        },\n      },\n    });\n  }\n}\n\nreturn out;\n"
+        "jsCode": "// n8n Code/Function: GenerarAlternativasDesdeLoopDone (parche flex + meta + correo)\n// Soporta: startIso/endIso, calendarId, room | roomName\n// Propaga meta para el HTML/Webhook: descripcion/description, correo, area, ReservID, nombre, participantes.\n\nconst DEFAULT_MIN_MINUTES = 30;\nconst DEFAULT_MAX_MINUTES = 120;\nconst OFFSETS_MINUTES = [-180, -120, -60, 60, 120, 180];\nconst MAX_OPTIONS_PER_ROOM = 8;\n\nconst STEP_LABEL = (m)=> (m<0? `${Math.abs(m)} min antes` : `${m} min después`);\n\nfunction toDate(x) {\n  if (!x) return null;\n  if (typeof x === 'object' && (x.date || x.dateTime)) {\n    return new Date(x.dateTime || x.date);\n  }\n  return new Date(x);\n}\nfunction toISO(dt) { return new Date(dt).toISOString(); }\nfunction clampDuration(mins, minAllowed, maxAllowed) {\n  return Math.max(minAllowed, Math.min(maxAllowed, mins));\n}\nfunction overlaps(aStart, aEnd, bStart, bEnd) {\n  return (aStart < bEnd) && (bStart < aEnd);\n}\nfunction sameDay(d1, d2) {\n  return d1.getFullYear() === d2.getFullYear() &&\n         d1.getMonth() === d2.getMonth() &&\n         d1.getDate() === d2.getDate();\n}\nfunction shiftMinutes(date, mins) { const d = new Date(date); d.setMinutes(d.getMinutes()+mins); return d; }\nfunction addDays(date, days) { const d = new Date(date); d.setDate(d.getDate()+days); return d; }\n\nfunction normalizeBusyIntervals(j) {\n  if (Array.isArray(j.busyIntervals)) {\n    return j.busyIntervals\n      .map(b => ({ start: toDate(b.start), end: toDate(b.end) }))\n      .filter(b => b.start && b.end && b.start < b.end);\n  }\n  const events = Array.isArray(j.events) ? j.events : [];\n  return events\n    .map(ev => {\n      const s = toDate(ev.start?.dateTime || ev.start?.date);\n      const e = toDate(ev.end?.dateTime || ev.end?.date);\n      return (s && e && s < e) ? { start: s, end: e } : null;\n    })\n    .filter(Boolean);\n}\n\n// ---- helpers correo ----\nfunction getRequesterEmail(localJson) {\n  // 1) del propio ítem\n  let mail = localJson.correo || localJson.email || localJson.requesterEmail || localJson.solicitanteEmail;\n  // 2) intenta leer del nodo de formulario si existe (ajusta el nombre si es distinto)\n  if (!mail) {\n    try {\n      const form = $items('DatosFormulario1', 0, 0);\n      if (form && form.json) {\n        mail = form.json.correo || form.json.email || form.json.mail;\n      }\n    } catch (e) { /* si no existe el nodo, no pasa nada */ }\n  }\n  // 3) limpieza simple\n  if (typeof mail === 'string') {\n    mail = mail.trim();\n    if (mail === '') mail = undefined;\n  }\n  return mail;\n}\n\nconst out = [];\n\nfor (const item of items) {\n  const j = item.json || {};\n\n  // ---- Adaptadores de campos (flex) ----\n  const roomId   = j.roomId || j.calendarId || j.calendar || j.calendario || j.calendarid;\n  const roomName = j.roomName || j.room || j.name || String(roomId || 'Sala');\n\n  // ---- Meta a propagar (tal como viene en tu flujo) ----\n  const descripcion  = j.descripcion || j.description || '';          // ej: \"Área: Informatica\"\n  const area         = j.area || j.Area || j['área'] || j['Área'] || j.departamento || j.Departamento || '';\n  const ReservID     = j.ReservID || j.reservationId || j.idReserva || j.IDReserva || j.id || j.ReservaID || '';\n  const nombre       = j.nombre || j.solicitanteNombre || j.Nombre || '';\n  const participantes= j.participantes || j.Participantes || j.asistentes || j.participants || '';\n\n  // correo del solicitante (se propagará en la salida)\n  const correo = getRequesterEmail(j) || j.correo || '';\n\n  let reqStart = null, reqEnd = null;\n\n  // 1) request.start/end (si existiera)\n  if (j.request && (j.request.start || j.request.end)) {\n    reqStart = toDate(j.request.start);\n    reqEnd   = toDate(j.request.end);\n  }\n  // 2) requestStart/requestEnd\n  if (!reqStart && j.requestStart) reqStart = toDate(j.requestStart);\n  if (!reqEnd   && j.requestEnd)   reqEnd   = toDate(j.requestEnd);\n  // 3) startIso/endIso\n  if (!reqStart && j.startIso) reqStart = toDate(j.startIso);\n  if (!reqEnd   && j.endIso)   reqEnd   = toDate(j.endIso);\n  // 4) start/end directos\n  if (!reqStart && j.start) reqStart = toDate(j.start);\n  if (!reqEnd   && j.end)   reqEnd   = toDate(j.end);\n\n  // Si no hay hora o no hay sala, saltamos\n  if (!reqStart || !reqEnd || !(reqStart < reqEnd) || !roomId) {\n    continue;\n  }\n\n  // Restricciones\n  const minMinutes = Number.isFinite(Number(j.constraints?.minMinutes))\n    ? Number(j.constraints.minMinutes) : DEFAULT_MIN_MINUTES;\n  const maxMinutes = Number.isFinite(Number(j.constraints?.maxMinutes))\n    ? Number(j.constraints.maxMinutes) : DEFAULT_MAX_MINUTES;\n\n  const requestedDurationMin = Math.round((reqEnd - reqStart) / 60000);\n  const slotDurationMin = clampDuration(requestedDurationMin, minMinutes, maxMinutes);\n\n  // Busy conocido (si no hay, lista vacía → luego verificas con GCal)\n  const busy = normalizeBusyIntervals(j);\n\n  // Candidatos mismo día\n  const sameDayCandidates = [];\n  for (const off of OFFSETS_MINUTES) {\n    const s = shiftMinutes(reqStart, off);\n    if (!sameDay(s, reqStart)) continue;\n    const e = shiftMinutes(s, slotDurationMin);\n    sameDayCandidates.push({ start: s, end: e, offset: off, dayShift: 0 });\n  }\n\n  // Candidatos +1 día\n  const nextDayBase = addDays(reqStart, 1);\n  const nextDayCandidates = [];\n  for (const off of OFFSETS_MINUTES) {\n    const s = shiftMinutes(nextDayBase, off);\n    const e = shiftMinutes(s, slotDurationMin);\n    nextDayCandidates.push({ start: s, end: e, offset: off, dayShift: 1 });\n  }\n\n  const allCandidates = [...sameDayCandidates, ...nextDayCandidates];\n\n  // Filtrar contra busy (si busy=[], pasan todos)\n  const freeOptions = [];\n  outer:\n  for (const c of allCandidates) {\n    for (const b of busy) {\n      if (overlaps(c.start, c.end, b.start, b.end)) continue outer;\n    }\n    freeOptions.push(c);\n    if (freeOptions.length >= MAX_OPTIONS_PER_ROOM) break;\n  }\n\n  for (const opt of freeOptions) {\n    const prettyLabel = (opt.dayShift === 0)\n      ? `Mismo día, ${STEP_LABEL(opt.offset)}`\n      : `+1 día, ${STEP_LABEL(opt.offset)}`;\n\n    out.push({\n      json: {\n        // ---- Identificación de sala ----\n        calendarId: roomId,\n        roomId,\n        roomName,\n\n        // ---- Meta propagada (para HTML/Webhook) ----\n        descripcion,\n        description: descripcion,                 // alias en inglés\n        area,\n        ReservID,\n        reservationId: ReservID,                  // alias\n        nombre,\n        solicitanteNombre: nombre,                // alias\n        participantes,\n\n        // ---- Contacto ----\n        correo,\n        to: correo,                               // alias por comodidad\n\n        // ---- Opción propuesta ----\n        option: {\n          start: toISO(opt.start),\n          end: toISO(opt.end),\n          minutes: slotDurationMin,\n          label: prettyLabel,\n          offsetsMinutes: opt.offset,\n          dayShift: opt.dayShift,\n        },\n\n        // ---- Datos de la solicitud original ----\n        request: {\n          start: toISO(reqStart),\n          end: toISO(reqEnd),\n          requestedMinutes: requestedDurationMin,\n          appliedMinutes: slotDurationMin,\n          minMinutes,\n          maxMinutes,\n        },\n      },\n    });\n  }\n}\n\nreturn out;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        784,
-        -272
+        -1664,
+        352
       ],
-      "id": "55c8aae1-5275-4984-a0e7-4a9d07cb46fb",
+      "id": "b66f76a0-9f5a-4b66-8dae-339deb232222",
       "name": "GenerarAlternativas",
       "alwaysOutputData": true
     },
@@ -749,10 +749,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        -320
+        -816,
+        304
       ],
-      "id": "f0e1fa42-4cfc-4488-89f3-4d4c2ae1ff7d",
+      "id": "3cce2011-97e4-45f6-8938-fc95fe5c5691",
       "name": "HTML"
     },
     {
@@ -776,16 +776,16 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1552,
-        80
+        -896,
+        704
       ],
-      "id": "bf12058d-2158-4fe3-a0b9-69a1a431c844",
+      "id": "ca485eee-e879-4aad-8354-7b61abb9aa54",
       "name": "Create an event",
       "alwaysOutputData": false,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "2qOfqUx3nAOJHZKo",
-          "name": "Google Calendar account 4"
+          "id": "CXCaPQ09gSVwizfD",
+          "name": "Google Calendar account"
         }
       }
     },
@@ -848,37 +848,72 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -160,
-        -80
+        -2608,
+        544
       ],
-      "id": "0ddcebe0-68e9-467e-a688-e535bb745cea",
+      "id": "f8aa6156-2a64-4fff-a112-8ad4e00cecc0",
       "name": "SET_META"
     },
     {
       "parameters": {
-        "jsCode": "// === CONFIG (usa URL pública y /webhook, no /webhook-test) ===\nconst CANCEL_WEBHOOK_URL = 'http://localhost:5678/webhook-test/cancelar-reserva';\nconst TZ = 'America/Santiago';\n\n// === INPUTS DESDE Merge/SET ===\nconst d = items[0].json;\nconst e  = items[1].json;\nconst correo       = d.correo;\nconst room         = d.room;\nconst fechaStr     = d.fechaStr;\nconst inicioStr    = d.inicioStr;\nconst finStr       = d.finStr;\nconst summary      = d.summary;\nconst participantes= d.participantes;\nconst nombre       = d.nombre;\nconst ReservaID    = d.ReservaID;   \nconst calendarID = d.calendarId;\nconst eventID = e.id;\n// <- en tu panel se llama así\n\nfunction enc(v){ return encodeURIComponent(v == null ? '' : String(v)); }\n\n// Enlace de cancelación (GET) — usa tus campos reales\nconst cancelLink =\n  `${CANCEL_WEBHOOK_URL}`\n  + `?accion=cancelar`\n  + `&reservationId=${enc(ReservaID)}`\n  + `&email=${enc(correo || d.emailDestino || '')}`\n  + `&room=${enc(room || '')}`\n  + `&fecha=${enc(fechaStr || '')}`\n  + `&inicio=${enc(inicioStr || '')}`\n  + `&fin=${enc(finStr || '')}`;\n\n// Asunto\nconst subject = `✅ Reserva confirmada — ${room || '-'} — ${ReservaID || ''}`;\n\n// === HTML con botón BULLETPROOF (tabla) ===\nconst htmlBody = `\n<div style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333333; max-width: 600px; margin: auto; border: 1px solid #dddddd; border-radius: 8px; overflow: hidden;\">\n  <div style=\"background-color: #4CAF50; color: #ffffff; padding: 20px; text-align: center;\">\n    <h1 style=\"margin: 0; font-size: 24px;\">✅ Reserva Confirmada Exitosamente</h1>\n  </div>\n\n  <div style=\"padding: 20px;\">\n    <p>Estimado(a) <strong>${nombre || ''}</strong>,</p>\n    <p>¡Tu reserva fue registrada y agregada al calendario!</p>\n\n    <h2 style=\"color: #4CAF50; font-size: 18px; border-bottom: 1px solid #eeeeee; padding-bottom: 5px;\">Detalles de la Reserva</h2>\n\n    <table width=\"100%\" cellspacing=\"0\" cellpadding=\"8\" border=\"0\" style=\"border-collapse: collapse;\">\n      <tbody>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td width=\"30%\" style=\"font-weight: bold; border: 1px solid #dddddd;\">Sala Reservada</td>\n          <td width=\"70%\" style=\"border: 1px solid #dddddd;\"><strong>${room || '-'}</strong></td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Fecha</td>\n          <td style=\"border: 1px solid #dddddd;\">${fechaStr || '-'}</td>\n        </tr>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Hora de Inicio</td>\n          <td style=\"border: 1px solid #dddddd;\">${inicioStr || '-'}</td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Hora de Fin</td>\n          <td style=\"border: 1px solid #dddddd;\">${finStr || '-'}</td>\n        </tr>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Motivo</td>\n          <td style=\"border: 1px solid #dddddd;\">${summary || '-'}</td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Participantes</td>\n          <td style=\"border: 1px solid #dddddd;\">${participantes || '-'}</td>\n        </tr>\n      </tbody>\n    </table>\n\n    <p style=\"margin-top: 12px; font-size: 12px; color: #666666;\">\n      <strong>Referencia:</strong> ID de Reserva <b>${ReservaID || '-'}</b>\n    </p>\n\n    <!-- Botón BULLETPROOF (tabla) -->\n    <table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" style=\"margin:16px auto;\">\n      <tr>\n        <td align=\"center\" bgcolor=\"#e53935\" style=\"\n          border-radius:6px;\n          mso-padding-alt:12px 18px;\n        \">\n          <a href=\"${cancelLink}\"\n             style=\"\n               display:block;\n               padding:12px 18px;\n               font-weight:bold;\n               text-decoration:none;\n               color:#ffffff;\n               font-family: Arial, sans-serif;\n             \">\n            ❌ Cancelar reserva\n          </a>\n        </td>\n      </tr>\n    </table>\n\n    <p style=\"font-size:12px; color:#666; margin-top:10px; text-align:center;\">\n      ¿Estás viendo esto desde un correo? Si el botón no funciona, usa este enlace:<br/>\n      <a href=\"${cancelLink}\" style=\"color:#e53935; font-weight:bold; word-break:break-all;\">Cancelar mi reserva</a>\n    </p>\n  </div>\n\n  <div style=\"background-color: #f4f4f4; padding: 15px; text-align: center; border-top: 1px solid #dddddd;\">\n    <p style=\"margin: 0; font-size: 12px; color: #666666;\">Sistema de Reservas</p>\n  </div>\n</div>\n`;\n\nreturn [{\n  json: {\n    to: correo || d.emailDestino,\n    subject,\n    htmlBody,\n    ReservaID,\n    room,\n    nombre,\n    participantes,\n    summary,\n    inicioStr,\n    finStr,\n    fechaStr,\n    correo,\n    TZ,\n    calendarID,\n    eventID\n  }\n}];\n"
+        "jsCode": "// === CONFIG (usa URL pública y /webhook, no /webhook-test) ===\nconst CANCEL_WEBHOOK_URL = 'http://localhost:5678/webhook-test/cancelar-reserva';\n\nconst TZ = 'America/Santiago';\n\n// === INPUTS DESDE Merge/SET ===\nconst d = items[0].json;\nconst e  = items[1].json;\nconst correo       = d.correo;\nconst room         = d.room;\nconst fechaStr     = d.fechaStr;\nconst inicioStr    = d.inicioStr;\nconst finStr       = d.finStr;\nconst summary      = d.summary;\nconst participantes= d.participantes;\nconst nombre       = d.nombre;\nconst ReservaID    = d.ReservaID;   \nconst calendarID = d.calendarId;\nconst eventID = e.id;\n// <- en tu panel se llama así\n\nfunction enc(v){ return encodeURIComponent(v == null ? '' : String(v)); }\n\n// Enlace de cancelación (GET) — usa tus campos reales\nconst cancelLink =\n  `${CANCEL_WEBHOOK_URL}`\n  + `?accion=cancelar`\n  + `&reservationId=${enc(ReservaID)}`\n  + `&eventId=${enc(eventID)}`\n  + `&calendarId=${enc(calendarID)}`\n  + `&email=${enc(correo)}`\n  + `&room=${enc(room)}`\n  + `&fecha=${enc(fechaStr)}`\n  + `&inicio=${enc(inicioStr)}`\n  + `&fin=${enc(finStr)}`;\n\n\n// Asunto\nconst subject = `✅ Reserva confirmada — ${room || '-'} — ${ReservaID || ''}`;\n\n// === HTML con botón BULLETPROOF (tabla) ===\nconst htmlBody = `\n<div style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333333; max-width: 600px; margin: auto; border: 1px solid #dddddd; border-radius: 8px; overflow: hidden;\">\n  <div style=\"background-color: #4CAF50; color: #ffffff; padding: 20px; text-align: center;\">\n    <h1 style=\"margin: 0; font-size: 24px;\">✅ Reserva Confirmada Exitosamente</h1>\n  </div>\n\n  <div style=\"padding: 20px;\">\n    <p>Estimado(a) <strong>${nombre || ''}</strong>,</p>\n    <p>¡Tu reserva fue registrada y agregada al calendario!</p>\n\n    <h2 style=\"color: #4CAF50; font-size: 18px; border-bottom: 1px solid #eeeeee; padding-bottom: 5px;\">Detalles de la Reserva</h2>\n\n    <table width=\"100%\" cellspacing=\"0\" cellpadding=\"8\" border=\"0\" style=\"border-collapse: collapse;\">\n      <tbody>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td width=\"30%\" style=\"font-weight: bold; border: 1px solid #dddddd;\">Sala Reservada</td>\n          <td width=\"70%\" style=\"border: 1px solid #dddddd;\"><strong>${room || '-'}</strong></td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Fecha</td>\n          <td style=\"border: 1px solid #dddddd;\">${fechaStr || '-'}</td>\n        </tr>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Hora de Inicio</td>\n          <td style=\"border: 1px solid #dddddd;\">${inicioStr || '-'}</td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Hora de Fin</td>\n          <td style=\"border: 1px solid #dddddd;\">${finStr || '-'}</td>\n        </tr>\n        <tr style=\"background-color: #f4f4f4;\">\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Motivo</td>\n          <td style=\"border: 1px solid #dddddd;\">${summary || '-'}</td>\n        </tr>\n        <tr>\n          <td style=\"font-weight: bold; border: 1px solid #dddddd;\">Participantes</td>\n          <td style=\"border: 1px solid #dddddd;\">${participantes || '-'}</td>\n        </tr>\n      </tbody>\n    </table>\n\n    <p style=\"margin-top: 12px; font-size: 12px; color: #666666;\">\n      <strong>Referencia:</strong> ID de Reserva <b>${ReservaID || '-'}</b>\n    </p>\n\n    <!-- Botón BULLETPROOF (tabla) -->\n    <table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" style=\"margin:16px auto;\">\n      <tr>\n        <td align=\"center\" bgcolor=\"#e53935\" style=\"\n          border-radius:6px;\n          mso-padding-alt:12px 18px;\n        \">\n          <a href=\"${cancelLink}\"\n             style=\"\n               display:block;\n               padding:12px 18px;\n               font-weight:bold;\n               text-decoration:none;\n               color:#ffffff;\n               font-family: Arial, sans-serif;\n             \">\n            ❌ Cancelar reserva\n          </a>\n        </td>\n      </tr>\n    </table>\n\n    <p style=\"font-size:12px; color:#666; margin-top:10px; text-align:center;\">\n      ¿Estás viendo esto desde un correo? Si el botón no funciona, usa este enlace:<br/>\n      <a href=\"${cancelLink}\" style=\"color:#e53935; font-weight:bold; word-break:break-all;\">Cancelar mi reserva</a>\n    </p>\n  </div>\n\n  <div style=\"background-color: #f4f4f4; padding: 15px; text-align: center; border-top: 1px solid #dddddd;\">\n    <p style=\"margin: 0; font-size: 12px; color: #666666;\">Sistema de Reservas</p>\n  </div>\n</div>\n`;\n\nreturn [{\n  json: {\n    to: correo || d.emailDestino,\n    subject,\n    htmlBody,\n    ReservaID,\n    room,\n    nombre,\n    participantes,\n    summary,\n    inicioStr,\n    finStr,\n    fechaStr,\n    correo,\n    TZ,\n    calendarID,\n    eventID\n  }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1936,
-        176
+        -512,
+        800
       ],
-      "id": "bf98d58d-1ec3-4949-89b9-33a4b0eba7a8",
+      "id": "0173fc2b-e73e-410c-91fb-f37f66b073ad",
       "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw",
+          "mode": "list",
+          "cachedResultName": "Registro Solicitud",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1989465276,
+          "mode": "list",
+          "cachedResultName": "Respuestas de formulario 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw/edit#gid=1989465276"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2928,
+        704
+      ],
+      "id": "b2072bb2-94eb-4dfb-a633-b7c970261df3",
+      "name": "DatosFormulario1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "fyAtwrA6kbBpaYd0",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
     }
   ],
   "pinData": {},
   "connections": {
     "DatosFormulario": {
       "main": [
-        [
-          {
-            "node": "DatosCode",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "DatosCode": {
@@ -1061,13 +1096,7 @@
             "type": "main",
             "index": 0
           }
-        ],
-        []
-      ]
-    },
-    "Send a message1": {
-      "main": [
-        []
+        ]
       ]
     },
     "Merge3": {
@@ -1173,17 +1202,27 @@
           }
         ]
       ]
+    },
+    "DatosFormulario1": {
+      "main": [
+        [
+          {
+            "node": "DatosCode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e79ba3ff-4b11-40c6-a9fb-e2403d579c59",
+  "versionId": "88195cd4-ed09-47a6-a8ea-64cdd7ae394f",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "21c80defdaa188c5343d40860d3b179beff5b31288c22d659793ecc78888c884"
+    "instanceId": "605a3cd9f00bba5091dd8352caa8e8a6f52dbf714d692df2d04e4d5949acc445"
   },
-  "id": "JlXz7VhLLe0UGRL2",
+  "id": "Xoo4qSpn61iPp8AB",
   "tags": []
 }
