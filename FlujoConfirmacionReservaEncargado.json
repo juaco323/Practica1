@@ -101,7 +101,7 @@
     },
     {
       "parameters": {
-        "sendTo": "felifigue2003@gmail.com",
+        "sendTo": "encargadosalas131@gmail.com",
         "subject": "=Confirmacion de reserva ✅ :  {{ $json[\"Sala asignada\"] }}  -  {{ $json.Fecha }}",
         "message": "={{ $json.htmlCorreo }}",
         "options": {}
@@ -163,7 +163,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "13203edb-ecfd-471a-af04-a4c020e28346",
+  "versionId": "e2801b1d-2302-4c47-8227-568aa69084d9",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "75ae557ad7613e328e47aab9310ca29d4d2c3097118be8af30150f73ed65f6c4"
