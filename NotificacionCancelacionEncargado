@@ -412,6 +412,7 @@
       ]
     },
     "Validar Datos": {
+
       "main": [
         [
           {
@@ -476,6 +477,93 @@
         [
           {
             "node": "Update row in sheet",
+
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+ main
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Preparar datos gmail",
+
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Eliminar Evento (Google Calendar)",
+ main
+            "type": "main",
+            "index": 0
+          },
+          {
+
+            "node": "Email al Encargado",
+
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar Evento (Google Calendar)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+ main
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+
+    "Email al Solicitante": {
+      "main": [
+        [
+          {
+            "node": "Merge Emails",
+
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter Valid Data",
+ main
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+
+    "Filter Valid Data": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -509,6 +597,7 @@
         ]
       ]
     },
+ main
     "Email al Encargado": {
       "main": [
         [
@@ -554,4 +643,9 @@
   },
   "id": "i526BMeXUeINiPhR",
   "tags": []
+ feature/ConfirmacionReserva-Encargado
+}
+  ]
+
+ main
 }
