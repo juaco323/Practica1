@@ -1,44 +1,18 @@
 {
-  "name": "cancela reserva 66",
   "nodes": [
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "1d883af8-366a-4124-94d9-cd13e05679b2",
-              "name": "",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -896,
-        208
-      ],
-      "id": "c8c801a3-21de-41cb-862a-f40cd334d9a9",
-      "name": "Edit Fields",
-      "alwaysOutputData": true
-    },
     {
       "parameters": {
         "path": "cancelar-reserva",
         "responseMode": "lastNode",
         "options": {}
       },
-      "id": "f6be0156-a877-41bc-8bc5-620960fbb495",
+      "id": "542ac25a-65fb-4d10-b2da-703b68f653fc",
       "name": "Webhook - Cancelar Reserva1",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        -1472,
-        160
+        -1392,
+        176
       ],
       "webhookId": "0ccdecf6-cdc1-4c5d-b62e-1c9d21a6cf23",
       "alwaysOutputData": true
@@ -47,55 +21,13 @@
       "parameters": {
         "functionCode": "const q = $json.query || {};\nconst accion = (q.accion || '').toLowerCase();\n\nif (accion !== 'cancelar') {\n  return [{ json: { ok: false, reason: 'Acción inválida' } }];\n}\n\nconst email = q.email || '';\nconst eventId = q.eventId || '';\nconst reservationId = q.reservationId || '';\nconst calendarId = q.calendarId || '';\nconst room = q.room || '';\nconst fecha = q.fecha || '';\nconst inicio = q.inicio || '';\nconst fin = q.fin || '';\n\nif (!email) {\n  return [{ json: { ok: false, reason: 'Email requerido' } }];\n}\n\nreturn [{\n  json: {\n    ok: true,\n    email,\n    eventId,\n    reservationId,\n    calendarId,\n    room,\n    fecha,\n    inicio,\n    fin\n  }\n}];"
       },
-      "id": "dbbd1ddd-b6bb-4095-9ca1-6ef5dd2aedbd",
+      "id": "1762e06f-8fba-47e6-ab03-f2917a3863ac",
       "name": "Validar Datos1",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
       "position": [
-        -1280,
-        160
-      ],
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "operation": "delete",
-        "calendar": {
-          "__rl": true,
-          "value": "={{ $json.ID_Sala }}",
-          "mode": "id"
-        },
-        "eventId": "={{ $json.Event_ID }}",
-        "options": {}
-      },
-      "id": "a26a5c9f-197d-4eb8-aab0-0120b78febf7",
-      "name": "Eliminar Evento (Google Calendar)1",
-      "type": "n8n-nodes-base.googleCalendar",
-      "typeVersion": 1,
-      "position": [
-        -896,
-        48
-      ],
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "FaIFt3W4WU84SPzl",
-          "name": "Google Calendar account 4"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "be890ded-ede1-4bcb-b396-fd3f2b9416d8",
-      "name": "Responder al Webhook1",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1,
-      "position": [
-        128,
-        144
+        -1200,
+        176
       ],
       "alwaysOutputData": true
     },
@@ -118,8 +50,8 @@
         "filtersUI": {
           "values": [
             {
-              "lookupColumn": "Correo electrónico",
-              "lookupValue": "={{ $json.email }}"
+              "lookupColumn": "=Correo electrónico",
+              "lookupValue": "={{ $('Webhook - Cancelar Reserva1').item.json.query[\"Correo electrónico\"] }}"
             }
           ]
         },
@@ -128,18 +60,83 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1120,
-        160
+        -1040,
+        176
       ],
-      "id": "f7916da0-e5d2-43fb-a0f8-c03d156ac2f7",
+      "id": "e63ef4fb-fba2-4b94-88f2-75bdece9e430",
       "name": "Get row(s) in sheet1",
       "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "nxge2Jefe4syfRzT",
-          "name": "Google Sheets account 2"
+          "id": "BdYu8Ov10AVVACR1",
+          "name": "Google Sheets account 3"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1d883af8-366a-4124-94d9-cd13e05679b2",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -816,
+        224
+      ],
+      "id": "9b094192-9523-4cc4-baab-7d58d7b086b7",
+      "name": "Edit Fields",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.ID_Sala }}",
+          "mode": "id"
+        },
+        "eventId": "={{ $json.Event_ID }}",
+        "options": {}
+      },
+      "id": "bed5fe48-e389-429e-9b7a-a36aaf1fdd13",
+      "name": "Eliminar Evento (Google Calendar)1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        64
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FaIFt3W4WU84SPzl",
+          "name": "Google Calendar account 4"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -608,
+        160
+      ],
+      "id": "51e306c8-cfb8-4c10-bf1c-6ad1d580ad00",
+      "name": "Merge6",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -308,46 +305,34 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -480,
-        144
+        -400,
+        160
       ],
-      "id": "9a7c49db-088f-4f47-8595-a5f9379947dd",
+      "id": "d9263fa1-51b2-4544-baf6-c1a7d4311af9",
       "name": "Update row in sheet2",
       "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "nxge2Jefe4syfRzT",
-          "name": "Google Sheets account 2"
+          "id": "BdYu8Ov10AVVACR1",
+          "name": "Google Sheets account 3"
         }
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        -688,
-        144
-      ],
-      "id": "d8cc07d7-e8fe-4936-a8b5-e4cd1c8b660d",
-      "name": "Merge6",
-      "alwaysOutputData": true
-    },
-    {
       "parameters": {
         "sendTo": "={{ $json['Correo electrónico'] }}",
-        "subject": "=❌ Reserva cancelada — {{ $json[\"Numero de sala\"] }} || ( {{ $json[\"Fecha de la reunión\"] }})",
+        "subject": "=❌ Reserva cancelada — {{ $json[\"Área/Departamento\"] }} || ( {{ $json[\"Fecha de la reunión\"] }})",
         "message": "=<!doctype html> <html lang=\"es\">   <head>     <meta charset=\"utf-8\">     <meta name=\"x-apple-disable-message-reformatting\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">     <title>Reserva cancelada</title>   </head>   <body style=\"margin:0;padding:0;background:#0f172a;\">     <!-- Wrapper -->     <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" style=\"background:#0f172a;\">       <tr>         <td align=\"center\" style=\"padding:32px 16px;\">                      <!-- Card -->           <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" style=\"max-width:640px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,.25);\">             <!-- Header -->             <tr>               <td style=\"background:#ef4444; background-image:linear-gradient(135deg,#ef4444 0%,#b91c1c 100%);padding:28px 28px 24px 28px;\">                 <table role=\"presentation\" width=\"100%\">                   <tr>                     <td style=\"font-family:Arial,Helvetica,sans-serif;color:#fff;font-size:24px;line-height:1.2;font-weight:800;letter-spacing:.2px;\">                       ❌ Reserva cancelada                     </td>                     <td align=\"right\" style=\"white-space:nowrap;\">                       <span style=\"display:inline-block;background:#ffffff22;border:1px solid #ffffff55;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px;\">                         Estado: Cancelada                       </span>                     </td>                   </tr>                 </table>                 <div style=\"font-family:Arial,Helvetica,sans-serif;color:#ffe4e6;font-size:14px;margin-top:4px;\">                   Hola <strong>{{$json[\"Nombre\"] || \"Invitado/a\"}}</strong>, tu reserva se canceló exitosamente.                 </div>               </td>             </tr>              <!-- Body -->             <tr>               <td style=\"padding:24px 24px 8px 24px;\">                 <!-- Summary Bar -->                 <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:separate;border-spacing:0 12px;\">                   <tr>                     <td style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;\">                       <table role=\"presentation\" width=\"100%\">                         <tr>                           <td style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#334155;\">                             <div style=\"font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.4px;\">Sala</div>                             <div style=\"font-size:16px;font-weight:700;color:#0f172a;\">{{$json[\"Numero de sala\"] || \"-\"}}</div>                           </td>                           <td style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#334155;\" align=\"center\">                             <div style=\"font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.4px;\">Fecha</div>                             <div style=\"font-size:16px;font-weight:700;color:#0f172a;\">{{$json[\"Fecha de la reunión\"] || \"-\"}}</div>                           </td>                           <td style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#334155;\" align=\"right\">                             <div style=\"font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.4px;\">Horario</div>                             <div style=\"font-size:16px;font-weight:700;color:#0f172a;\">                               {{$json[\"Hora de inicio\"] || \"-\"}} – {{$json[\"Hora de Termino\"] || \"-\"}}                             </div>                           </td>                         </tr>                       </table>                     </td>                   </tr>                 </table>                  <!-- Details Grid -->                 <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:8px;\">                   <!-- row 1 -->                   <tr>                     <td width=\"50%\" valign=\"top\" style=\"padding:8px;\">                       <table role=\"presentation\" width=\"100%\" style=\"background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;\">                         <tr>                           <td style=\"padding:14px 16px;\">                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;\">Área / Departamento</div>                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#111827;font-weight:700;margin-top:4px;\">                               {{$json[\"Área/Departamento\"] || \"-\"}}                             </div>                           </td>                         </tr>                       </table>                     </td>                     <td width=\"50%\" valign=\"top\" style=\"padding:8px;\">                       <table role=\"presentation\" width=\"100%\" style=\"background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;\">                         <tr>                           <td style=\"padding:14px 16px;\">                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;\">Participantes</div>                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#111827;font-weight:700;margin-top:4px;\">                               {{$json[\"Número de participantes\"] || 0}}                             </div>                           </td>                         </tr>                       </table>                     </td>                   </tr>                   <!-- row 2 -->                   <tr>                     <td width=\"50%\" valign=\"top\" style=\"padding:8px;\">                       <table role=\"presentation\" width=\"100%\" style=\"background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;\">                         <tr>                           <td style=\"padding:14px 16px;\">                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;\">Solicitante</div>                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#111827;font-weight:700;margin-top:4px;\">                               {{$json[\"Nombre\"] || \"-\"}}                             </div>                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#374151;margin-top:2px;\">                               {{$json[\"Correo electrónico\"] || \"-\"}}                             </div>                           </td>                         </tr>                       </table>                     </td>                     <td width=\"50%\" valign=\"top\" style=\"padding:8px;\">                       <table role=\"presentation\" width=\"100%\" style=\"background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;\">                         <tr>                           <td style=\"padding:14px 16px;\">                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;\">ID de Reserva</div>                             <div style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#111827;font-weight:700;margin-top:4px;word-break:break-all;\">                               {{$json[\"ID_Reserva\"] || \"-\"}}                             </div>                           </td>                         </tr>                       </table>                     </td>                   </tr>                 </table>                  <!-- Info Box -->                 <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:16px;\">                   <tr>                     <td style=\"background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:14px;\">                       <div style=\"font-family:Arial,Helvetica,sans-serif;color:#991b1b;font-size:14px;\">                         La sala ha sido liberada para otros usuarios. Si necesitas **reagendar**, crea una nueva solicitud desde el sistema.                       </div>                     </td>                   </tr>                 </table>                  <!-- Divider -->                 <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:20px;\">                   <tr>                     <td style=\"border-top:1px dashed #e5e7eb;height:1px;line-height:1px;font-size:0;\">&nbsp;</td>                   </tr>                 </table>                  <!-- Footer text -->                 <div style=\"font-family:Arial,Helvetica,sans-serif;color:#6b7280;font-size:12px;margin-top:12px;\">                   Si crees que esta cancelación fue un error, responde a este correo indicando el <strong>ID de Reserva</strong>.                 </div>               </td>             </tr>              <!-- Footer -->             <tr>               <td style=\"background:#f8fafc;padding:16px;text-align:center;border-top:1px solid #e5e7eb;\">                 <div style=\"font-family:Arial,Helvetica,sans-serif;color:#64748b;font-size:12px;\">                   Sistema de Reservas • Colegios Arzobispado SSMA                 </div>               </td>             </tr>           </table>           <!-- /Card -->          </td>       </tr>     </table>     <!-- /Wrapper -->   </body> </html>",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -208,
-        160
+        -128,
+        176
       ],
-      "id": "a1799438-53f3-4b43-ad4d-ffc8ac41ce48",
-      "name": "Send a message3",
+      "id": "ec70aa53-4a14-4e69-94fd-b5bc668b1faf",
+      "name": "correo a solicitante",
       "webhookId": "a8dc06ca-d026-47f7-ae08-c4f92671dad8",
       "alwaysOutputData": true,
       "credentials": {
@@ -368,17 +353,17 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -80,
-        -16
+        0,
+        0
       ],
-      "id": "bd035f3a-c6e5-4776-b5ea-f768ce5c405f",
-      "name": "Send a message5",
+      "id": "e0058fbe-b96c-4b49-bf83-e52c93c50c96",
+      "name": "correo a encargado",
       "webhookId": "811e6883-0478-462c-852c-73ccaa5efe2f",
       "alwaysOutputData": true,
       "credentials": {
         "gmailOAuth2": {
-          "id": "WbrC9RQyEMCFZWAl",
-          "name": "Gmail account 2"
+          "id": "zahYLl03LVG4YxGQ",
+          "name": "Gmail account 3"
         }
       },
       "onError": "continueRegularOutput"
@@ -387,30 +372,32 @@
       "parameters": {
         "options": {}
       },
+      "id": "620f33da-b00f-44ae-82c6-012b5cd67c44",
+      "name": "Responder al Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        160
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        128,
-        -16
+        208,
+        0
       ],
-      "id": "943f852d-174e-49d2-a7be-ba0244bec3bc",
+      "id": "6fb10e53-b192-473e-bfce-65b5356f72c5",
       "name": "Respond to Webhook",
       "alwaysOutputData": true
     }
   ],
-  "pinData": {},
   "connections": {
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Merge6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook - Cancelar Reserva1": {
       "main": [
         [
@@ -433,17 +420,6 @@
         ]
       ]
     },
-    "Eliminar Evento (Google Calendar)1": {
-      "main": [
-        [
-          {
-            "node": "Merge6",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
     "Get row(s) in sheet1": {
       "main": [
         [
@@ -460,18 +436,24 @@
         ]
       ]
     },
-    "Update row in sheet2": {
+    "Edit Fields": {
       "main": [
         [
           {
-            "node": "Send a message3",
+            "node": "Merge6",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Eliminar Evento (Google Calendar)1": {
+      "main": [
+        [
           {
-            "node": "Send a message5",
+            "node": "Merge6",
             "type": "main",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -487,7 +469,23 @@
         ]
       ]
     },
-    "Send a message3": {
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "correo a solicitante",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "correo a encargado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "correo a solicitante": {
       "main": [
         [
           {
@@ -498,7 +496,7 @@
         ]
       ]
     },
-    "Send a message5": {
+    "correo a encargado": {
       "main": [
         [
           {
@@ -509,15 +507,5 @@
         ]
       ]
     }
-  },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "versionId": "71482da0-f10a-42ee-a1f8-eb933baeb052",
-  "meta": {
-    "instanceId": "cec2302d0edf1c1fca5c4dd6714c512a076655ddc65094124159e541ee16fc32"
-  },
-  "id": "COjSJHN4HOnidIiN",
-  "tags": []
+  }
 }
