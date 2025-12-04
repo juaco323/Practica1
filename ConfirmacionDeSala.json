@@ -1,17 +1,17 @@
 {
-  "name": "ConfirmacionDeSala",
+  "name": "ConfirmaciondeSala",
   "nodes": [
     {
       "parameters": {
         "jsCode": "// ===================== NORMALIZAR DATOS =====================\n// Compatible con Webhook + HTML Alternativas + Merge directo\n// Formato: hora 24h, fecha DD/MM/YYYY\n\nconst TZ = 'America/Santiago';\nconst q = $json;\n\n// Detecta si vienen dentro de \"query\" (Webhook)\nconst src = q.query ? q.query : q;\n\n// Helpers\nfunction toISO(val) {\n  if (!val) return '';\n  const d = new Date(val);\n  return isNaN(d) ? String(val) : d.toISOString();\n}\n\n// Convertir a partes locales\nfunction toLocalParts(dtStr) {\n  if (!dtStr) return { fecha: '', hora: '' };\n  const d = new Date(dtStr);\n  if (isNaN(d)) return { fecha: '', hora: '' };\n\n  // Fecha en formato DD/MM/YYYY\n  const dia = String(d.getDate()).padStart(2, '0');\n  const mes = String(d.getMonth() + 1).padStart(2, '0');\n  const anio = d.getFullYear();\n  const fecha = `${dia}/${mes}/${anio}`;\n\n  // Hora en formato 24h (HH:mm)\n  const hora = d.toLocaleTimeString('es-CL', {\n    timeZone: TZ,\n    hour: '2-digit',\n    minute: '2-digit',\n    hour12: false, // <- evita AM/PM\n  });\n\n  return { fecha, hora };\n}\n\n// Calcular fechas legibles\nconst startIso = toISO(src.start);\nconst endIso = toISO(src.end);\nconst { fecha: fechaLarga, hora: inicioStr } = toLocalParts(startIso);\nconst { hora: finStr } = toLocalParts(endIso);\n\n// Resultado unificado\nreturn [{\n  json: {\n    // --- Identificadores y correo ---\n    reservaId: src.reservaId || src.ReservID || src.ReservaID || src.reservationId || 'SIN-ID',\n    email: src.email || src.correo || src.to || 'sin-correo@demo.local',\n\n    // --- Datos del solicitante ---\n    nombre: src.nombre || src.solicitante || '',\n    area: src.area || '',\n    participantes: Number(src.participantes || 0),\n    descripcion: src.descripcion || '',\n\n    // --- Información de evento ---\n    summary: src.summary || 'Reunión',\n    calendarId: src.calendarId || '',\n    roomName: src.room || '',\n\n    // --- Fechas ISO y texto ---\n    startIso,\n    endIso,\n    fechaLarga,  // ahora formato DD/MM/YYYY\n    inicioStr,   // formato HH:mm\n    finStr       // formato HH:mm\n  }\n}];\n"
       },
-      "id": "7c47f544-37b4-4c36-b84d-34b988009c41",
+      "id": "c2851ea5-6420-46ce-9a74-c6e090537d18",
       "name": "Normalizar Datos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -368,
-        192
+        -912,
+        208
       ]
     },
     {
@@ -28,17 +28,17 @@
           "summary": "={{ $json.summary }}: {{ $json.nombre }} || {{ $json.roomName }} || Reservada"
         }
       },
-      "id": "a39c0f8d-44ac-48a8-8d8f-e5383af5780c",
+      "id": "646a7346-8763-4e29-86c0-93eb56ebcc51",
       "name": "Crear Evento Google Calendar",
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        0,
-        0
+        -544,
+        16
       ],
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "CXCaPQ09gSVwizfD",
+          "id": "8svZdNLg5wYXGvOV",
           "name": "Google Calendar account"
         }
       }
@@ -216,18 +216,18 @@
         },
         "options": {}
       },
-      "id": "55970bfa-0e2b-48a4-a99d-c13f094d66b4",
+      "id": "124c0449-d78e-4324-a698-f4247de7c457",
       "name": "Actualizar Hoja Registro",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        432,
-        208
+        -112,
+        224
       ],
       "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "YW4UkII7eEBygXxR",
+          "id": "86xkjbScXe93U4gm",
           "name": "Google Sheets account"
         }
       }
@@ -239,21 +239,59 @@
         "message": "==<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<title>Reserva Confirmada</title>\n\n<style>\n  body {\n    background-color: #F9F6EE;\n    font-family: 'Segoe UI', Roboto, Arial, sans-serif;\n    margin: 0;\n    padding: 60px 16px;\n    color: #111;\n  }\n  .card {\n    max-width: 600px;\n    margin: 0 auto;\n    background: #ffffff;\n    border-radius: 18px;\n    box-shadow: 0 4px 20px rgba(0,0,0,0.15);\n    overflow: hidden;\n  }\n  .header {\n    background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);\n    color: #ffffff;\n    padding: 24px;\n    text-align: center;\n  }\n  .header h2 {\n    margin: 0;\n    font-size: 22px;\n    font-weight: 700;\n  }\n  .header small {\n    display: block;\n    margin-top: 6px;\n    color: #e6ffe9;\n    font-size: 14px;\n    font-weight: 500;\n  }\n  .content {\n    padding: 30px;\n  }\n  .content p {\n    font-size: 16px;\n    color: #333;\n    text-align: center;\n    margin-bottom: 25px;\n  }\n  table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-bottom: 25px;\n  }\n  td {\n    padding: 10px 0;\n    font-size: 15px;\n  }\n  td:first-child {\n    font-weight: bold;\n    color: #14532d;\n    width: 35%;\n  }\n  tr:nth-child(even) td {\n    background: #f3faf5;\n  }\n  .footer {\n    font-size: 13px;\n    color: #666;\n    text-align: center;\n    padding: 20px 30px 30px;\n    border-top: 1px solid #eee;\n    background: #fff;\n  }\n  .btn-cancel {\n    display: inline-block;\n    padding: 12px 20px;\n    background: #e53935;\n    color: #ffffff !important;\n    text-decoration: none;\n    border-radius: 6px;\n    font-weight: 700;\n    font-size: 14px;\n  }\n</style>\n\n</head>\n<body>\n  <div class=\"card\">\n    <div class=\"header\">\n      <h2>✅ Reserva Confirmada</h2>\n      <small>Tu solicitud fue procesada con éxito</small>\n    </div>\n\n    <div class=\"content\">\n      <p>\n        ¡Tu reserva ha sido <b>confirmada correctamente</b>!<br>\n        A continuación se muestran los detalles:\n      </p>\n\n      <table>\n        <tr>\n          <td>Sala:</td>\n          <td>{{ $json[\"Sala asignada\"] }}</td>\n        </tr>\n        <tr>\n          <td>Fecha:</td>\n          <td>{{ $json.Fecha }}</td>\n        </tr>\n        <tr>\n          <td>Horario:</td>\n          <td>{{ $json.horaInicio }} – {{ $json.horaTermino }}</td>\n        </tr>\n        <tr>\n          <td>Participantes:</td>\n          <td>{{ $json[\"N° Participantes\"] }}</td>\n        </tr>\n        <tr>\n          <td>Solicitante:</td>\n          <td>{{ $json.Nombre }} ({{ $json.Correo }})</td>\n        </tr>\n        <tr>\n          <td>ID Reserva:</td>\n          <td>{{ $json[\"ID_Reserva\"] }}</td>\n        </tr>\n      </table>\n\n      <!-- BOTÓN CANCELAR RESERVA -->\n      <p style=\"text-align:center; margin-bottom: 10px;\">\n        Si necesitas cancelar esta reserva, puedes hacerlo aquí:\n      </p>\n\n      <p style=\"text-align:center; margin-bottom: 20px;\">\n        <a class=\"btn-cancel\"\n   href=\"http://localhost:5678/webhook-test/cancelar-reserva?accion=cancelar&reservationId={{ $json['ID_Reserva'] }}&eventId={{ $json['Event_ID'] }}&calendarId={{ $json['ID_Sala'] }}&email={{ $json['Correo'] }}&room={{ $json['Sala asignada'] }}&fecha={{ $json.Fecha }}&inicio={{ $json.horaInicio }}&fin={{ $json.horaTermino }}\">\n    ❌ Cancelar reserva\n        </a>\n      </p>\n\n    </div>\n\n    <div class=\"footer\">\n      Gracias por utilizar el <b>sistema automatizado de reservas</b>.<br>\n      © {{ new Date().getFullYear() }} — Equipo de Gestión de Salas\n    </div>\n  </div>\n</body>\n</html>\n",
         "options": {}
       },
-      "id": "6e350ed0-59ee-438d-95dd-bd0621e1355a",
+      "id": "b65a2917-df38-4918-ac24-c88a6c23589a",
       "name": "Enviar Correo Confirmación",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        752,
-        208
+        208,
+        224
       ],
-      "webhookId": "716eeaa9-19af-4576-b90e-a7fbdcd9c05e",
+      "webhookId": "1b306899-3bc8-4603-8ec5-1f7eb8f94744",
       "credentials": {
         "gmailOAuth2": {
-          "id": "ggN6VexbBbATMvgY",
+          "id": "EnfiD7v3GBzoIX7C",
           "name": "Gmail account"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $json;\n\nconst htmlConfirmation = `\n<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Reserva Confirmada</title>\n  <style>\n    body {\n      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n      background: linear-gradient(135deg, #10b981 0%, #059669 100%);\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      min-height: 100vh;\n      margin: 0;\n      padding: 20px;\n    }\n    .container {\n      background: white;\n      border-radius: 16px;\n      box-shadow: 0 10px 40px rgba(0,0,0,0.2);\n      padding: 40px;\n      max-width: 500px;\n      text-align: center;\n      animation: slideUp 0.5s ease-out;\n    }\n    @keyframes slideUp {\n      from { opacity: 0; transform: translateY(30px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n    .icon {\n      width: 80px;\n      height: 80px;\n      background: #10b981;\n      border-radius: 50%;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      margin: 0 auto 24px;\n      animation: scaleIn 0.6s ease-out 0.2s both;\n    }\n    @keyframes scaleIn {\n      from { transform: scale(0); }\n      to { transform: scale(1); }\n    }\n    .checkmark {\n      width: 40px;\n      height: 40px;\n      stroke: white;\n      stroke-width: 3;\n      fill: none;\n      stroke-dasharray: 100;\n      stroke-dashoffset: 100;\n      animation: draw 0.8s ease-out 0.4s forwards;\n    }\n    @keyframes draw {\n      to { stroke-dashoffset: 0; }\n    }\n    h1 {\n      color: #1f2937;\n      font-size: 28px;\n      margin: 0 0 16px;\n    }\n    .message {\n      color: #6b7280;\n      font-size: 16px;\n      line-height: 1.6;\n      margin-bottom: 24px;\n    }\n    .details {\n      background: #f0fdf4;\n      border-radius: 8px;\n      padding: 20px;\n      margin: 24px 0;\n      text-align: left;\n      border: 2px solid #bbf7d0;\n    }\n    .detail-row {\n      display: flex;\n      justify-content: space-between;\n      padding: 8px 0;\n      border-bottom: 1px solid #dcfce7;\n    }\n    .detail-row:last-child {\n      border-bottom: none;\n    }\n    .detail-label {\n      color: #166534;\n      font-weight: 600;\n    }\n    .detail-value {\n      color: #14532d;\n      font-weight: 500;\n    }\n    .btn {\n      display: inline-block;\n      background: #10b981;\n      color: white;\n      padding: 12px 32px;\n      border-radius: 8px;\n      text-decoration: none;\n      font-weight: 600;\n      transition: background 0.3s;\n      margin-top: 16px;\n    }\n    .btn:hover {\n      background: #059669;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"icon\">\n      <svg class=\"checkmark\" viewBox=\"0 0 24 24\">\n        <polyline points=\"20 6 9 17 4 12\"></polyline>\n      </svg>\n    </div>\n    \n    <h1>🎉 ¡Reserva Confirmada!</h1>\n    \n    <p class=\"message\">\n      Tu reserva ha sido <strong>registrada exitosamente</strong>. \n      Hemos enviado los detalles a tu correo electrónico.\n    </p>\n    \n    <div class=\"details\">\n      <div class=\"detail-row\">\n        <span class=\"detail-label\">Sala:</span>\n        <span class=\"detail-value\">${d['Sala asignada'] || d.roomName || d.room || 'N/A'}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span class=\"detail-label\">Fecha:</span>\n        <span class=\"detail-value\">${d.Fecha || d.fechaLarga || 'N/A'}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span class=\"detail-label\">Horario:</span>\n        <span class=\"detail-value\">${d.horaInicio || d.inicioStr || 'N/A'} - ${d.horaTermino || d.finStr || 'N/A'}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span class=\"detail-label\">Participantes:</span>\n        <span class=\"detail-value\">${d['N° Participantes'] || d.participantes || 'N/A'}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span class=\"detail-label\">ID Reserva:</span>\n        <span class=\"detail-value\">${d.ID_Reserva || d.reservaId || d.ReservaID || 'N/A'}</span>\n      </div>\n    </div>\n    \n    <p style=\"color: #166534; font-size: 14px; background: #f0fdf4; padding: 12px; border-radius: 6px; margin: 16px 0;\">\n      📧 Revisa tu correo para más detalles y opciones de cancelación.\n    </p>\n    \n    <a href=\"#\" class=\"btn\">Ir a mis reservas</a>\n  </div>\n</body>\n</html>\n`;\n\nreturn [{\n  json: {\n    ...d,\n    htmlConfirmation\n  }\n}];"
+      },
+      "id": "35a731b4-ff21-422c-8560-0bde5283c125",
+      "name": "Generar HTML Confirmación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.htmlConfirmation }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ecdcba0a-5d6c-44cc-ae8e-776f71f8e903",
+      "name": "Responder HTML Confirmación",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        592,
+        224
+      ],
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -264,39 +302,36 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        208,
-        208
+        -336,
+        224
       ],
-      "id": "ba450ab2-1db1-4712-af48-4bcc4d14cb57",
+      "id": "c65fc40d-80a4-4e55-8519-f6e141778d3f",
       "name": "Merge"
     },
     {
       "parameters": {
-        "path": "confirmar-reserva",
+        "path": "confirmar",
         "options": {
-          "responseData": {
-            "values": [
+          "responseData": "=<!DOCTYPE html> <html lang=\"es\"> <head>   <meta charset=\"UTF-8\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">   <title>Reserva Confirmada</title>   <style>     body {       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;       background: linear-gradient(135deg, #10b981 0%, #059669 100%);       display: flex;       justify-content: center;       align-items: center;       min-height: 100vh;       margin: 0;       padding: 20px;     }     .container {       background: white;       border-radius: 16px;       box-shadow: 0 10px 40px rgba(0,0,0,0.2);       padding: 40px;       max-width: 500px;       text-align: center;       animation: slideUp 0.5s ease-out;     }     @keyframes slideUp {       from { opacity: 0; transform: translateY(30px); }       to { opacity: 1; transform: translateY(0); }     }     .icon {       width: 80px;       height: 80px;       background: #10b981;       border-radius: 50%;       display: flex;       align-items: center;       justify-content: center;       margin: 0 auto 24px;       animation: scaleIn 0.6s ease-out 0.2s both;     }     @keyframes scaleIn {       from { transform: scale(0); }       to { transform: scale(1); }     }     .checkmark {       width: 40px;       height: 40px;       stroke: white;       stroke-width: 3;       fill: none;       stroke-dasharray: 100;       stroke-dashoffset: 100;       animation: draw 0.8s ease-out 0.4s forwards;     }     @keyframes draw {       to { stroke-dashoffset: 0; }     }     h1 {       color: #1f2937;       font-size: 28px;       margin: 0 0 16px;     }     .message {       color: #6b7280;       font-size: 16px;       line-height: 1.6;       margin-bottom: 24px;     }     .details {       background: #f0fdf4;       border-radius: 8px;       padding: 20px;       margin: 24px 0;       text-align: left;       border: 2px solid #bbf7d0;     }     .detail-row {       display: flex;       justify-content: space-between;       padding: 8px 0;       border-bottom: 1px solid #dcfce7;     }     .detail-row:last-child {       border-bottom: none;     }     .detail-label {       color: #166534;       font-weight: 600;     }     .detail-value {       color: #14532d;       font-weight: 500;     }     .btn {       display: inline-block;       background: #10b981;       color: white;       padding: 12px 32px;       border-radius: 8px;       text-decoration: none;       font-weight: 600;       transition: background 0.3s;       margin-top: 16px;     }     .btn:hover {       background: #059669;     }   </style> </head> <body>   <div class=\"container\">     <div class=\"icon\">       <svg class=\"checkmark\" viewBox=\"0 0 24 24\">         <polyline points=\"20 6 9 17 4 12\"></polyline>       </svg>     </div>          <h1>🎉 ¡Reserva Confirmada!</h1>          <p class=\"message\">       Tu reserva ha sido <strong>registrada exitosamente</strong>.        Hemos enviado los detalles a tu correo electrónico.     </p>          <div class=\"details\">       <div class=\"detail-row\">         <span class=\"detail-label\">Estado:</span>         <span class=\"detail-value\">✅ Confirmada</span>       </div>       <div class=\"detail-row\">         <span class=\"detail-label\">Notificación:</span>         <span class=\"detail-value\">Enviada por correo</span>       </div>     </div>          <p style=\"color: #166534; font-size: 14px; background: #f0fdf4; padding: 12px; border-radius: 6px; margin: 16px 0;\">       📧 Revisa tu correo para más detalles y opciones de cancelación.     </p>          <a href=\"#\" class=\"btn\">Ir a mis reservas</a>   </div> </body> </html>",
+          "responseHeaders": {
+            "entries": [
               {
-                "name": "status",
-                "value": "ok"
-              },
-              {
-                "name": "message",
-                "value": "Reserva recibida correctamente"
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
               }
             ]
           }
         }
       },
-      "id": "f24d73e2-79d4-42fb-baf3-8046132ccd68",
+      "id": "9bb0cdc2-fa82-46a1-a421-3e988b12d4ea",
       "name": "Webhook Confirmar",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        -592,
-        192
+        -1136,
+        208
       ],
-      "webhookId": "278ac48d-a3f2-4b11-8e41-218aa0cc73d4"
+      "webhookId": "7f2b3470-841a-48a0-8307-282c0425afc7"
     }
   ],
   "pinData": {},
@@ -339,6 +374,28 @@
         ]
       ]
     },
+    "Enviar Correo Confirmación": {
+      "main": [
+        [
+          {
+            "node": "Generar HTML Confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar HTML Confirmación": {
+      "main": [
+        [
+          {
+            "node": "Responder HTML Confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Merge": {
       "main": [
         [
@@ -366,10 +423,10 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "761f379a-43ff-466a-9e1f-47a7d23e2557",
+  "versionId": "3fbd7093-5f11-40ce-9038-91fe96d0d0e7",
   "meta": {
-    "instanceId": "605a3cd9f00bba5091dd8352caa8e8a6f52dbf714d692df2d04e4d5949acc445"
+    "instanceId": "2574a06fe6007e6eb13ddc542eab2327f38a17c4408e5eaa15ddae5a02064907"
   },
-  "id": "Dxxef6MSgum807ur",
+  "id": "jHngffhwP6rNUpJs",
   "tags": []
 }
