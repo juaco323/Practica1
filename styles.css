@@ -1,0 +1,163 @@
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    /* Light gray neutral background */
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 300px;
+}
+
+/* Smart Header Styles */
+.smart-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    z-index: 1000;
+    will-change: transform;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* Lighter shadow */
+}
+
+.header-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5) grayscale(100%);
+    /* Force grayscale to match theme perfectly */
+}
+
+.header-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    z-index: 1001;
+}
+
+.header-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+    margin: 0;
+    padding: 0 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', sans-serif;
+    /* Clean modern font */
+}
+
+/* Main Content Card */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-bottom: 50px;
+    flex-direction: column;
+}
+
+.content-card {
+    background: white;
+    border-radius: 4px;
+    /* Sharper corners for modern look */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    /* Very subtle shadow */
+    padding: 50px;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Smoother ease */
+    border: 1px solid #e9ecef;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Text & Details */
+h2.text-dark {
+    font-weight: 300;
+    /* Lighter weight for elegance */
+    color: #212529;
+    letter-spacing: -0.5px;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.message {
+    color: #495057;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.details-box {
+    background: #ffffff;
+    border-radius: 0;
+    padding: 24px;
+    border-left: 3px solid #343a40;
+    /* Dark gray accent */
+    border-top: 1px solid #f1f3f5;
+    border-right: 1px solid #f1f3f5;
+    border-bottom: 1px solid #f1f3f5;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: #212529;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.cta-text {
+    font-size: 1rem;
+    color: #6c757d;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+/* Button Styles */
+.btn-custom {
+    background: #212529;
+    /* Black/Dark Gray */
+    color: white;
+    padding: 14px 40px;
+    border-radius: 0;
+    /* Square buttons */
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #212529;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: none;
+    text-transform: uppercase;
+}
+
+.btn-custom:hover {
+    background: white;
+    color: #212529;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
