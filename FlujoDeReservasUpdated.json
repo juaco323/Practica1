@@ -34,13 +34,13 @@
           "value": {
             "Nombre": "={{ $json.nombre }}",
             "Correo": "={{ $json.correo }}",
-            "Area/Departamento": "={{ $json.area }}",
             "Fecha": "={{ $json.fecha }}",
             "horaInicio": "={{ $json.inicio }}",
             "horaTermino": "={{ $json.termino }}",
             "N° Participantes": "={{ $json.participantes }}",
             "Estado": "En proceso",
-            "ID_Reserva": "={{ $json.ReservaID }}"
+            "ID_Reserva": "={{ $json.ReservaID }}",
+            "Area": "={{ $json.area }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -63,13 +63,14 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "Area/Departamento",
-              "displayName": "Area/Departamento",
+              "id": "Area",
+              "displayName": "Area",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "Fecha",
@@ -108,16 +109,6 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "ID_Reserva",
-              "displayName": "ID_Reserva",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
               "id": "Estado",
               "displayName": "Estado",
               "required": false,
@@ -148,6 +139,16 @@
             {
               "id": "Event_ID",
               "displayName": "Event_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID_Reserva",
+              "displayName": "ID_Reserva",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -256,7 +257,13 @@
       ],
       "id": "2a412a6a-69fa-4780-9728-b621f212cf5a",
       "name": "Get many events",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ao8m93dzQTWq2Jd8",
+          "name": "Google Calendar account"
+        }
+      }
     },
     {
       "parameters": {
@@ -545,7 +552,13 @@
       ],
       "id": "5450dc68-b1d2-4821-abd6-cdaf13552fe3",
       "name": "Get availability in a calendar",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ao8m93dzQTWq2Jd8",
+          "name": "Google Calendar account"
+        }
+      }
     },
     {
       "parameters": {
@@ -715,7 +728,13 @@
       ],
       "id": "524d2ec8-d2d4-468e-a1a4-8045e7730676",
       "name": "Create an event",
-      "alwaysOutputData": false
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ao8m93dzQTWq2Jd8",
+          "name": "Google Calendar account"
+        }
+      }
     },
     {
       "parameters": {
@@ -773,7 +792,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const r = $json;\n\n// ========= 1) HELPERS =========\nfunction pad(n){ return String(n).padStart(2,'0'); }\n\nfunction parseHora(str){\n  const parts = String(str || '').trim().split(':');\n  return { hh: pad(+parts[0] || 0), mm: pad(+parts[1] || 0) };\n}\n\nfunction parseFechaSheets(v){\n  if (v == null) return null;\n  if (v instanceof Date && !isNaN(v)) return v;\n  if (typeof v === 'number') {\n    const epoch = Date.UTC(1899,11,30);\n    return new Date(epoch + Math.round(v * 86400000));\n  }\n  const s = String(v).trim();\n  const asDate = new Date(s);\n  if (!isNaN(asDate)) return asDate;\n  const m = s.match(/^(\\d{1,2})[\\/\\-](\\d{1,2})[\\/\\-](\\d{4})$/);\n  if (m) {\n    const dd = +m[1], mm = +m[2] - 1, yyyy = +m[3];\n    return new Date(yyyy, mm, dd);\n  }\n  return null;\n}\n\n// --- Sanitizador básico: elimina tags HTML/script\nfunction sanitizeText(value) {\n  if (value == null) return '';\n  let s = String(value);\n  // elimina tags tipo <...>\n  s = s.replace(/<[^>]*>/g, '');\n  // normaliza espacios\n  s = s.replace(/\\s+/g, ' ').trim();\n  return s;\n}\n\n// --- Validador de email\nfunction isValidEmail(email) {\n  if (!email) return false;\n  const re = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\n  return re.test(String(email).trim());\n}\n\n// ========= 2) LECTURA Y SANITIZACIÓN =========\n\n// Campos crudos desde la hoja\nconst rawNombre = r['Nombre'] || r['Nombre del solicitante'] || '';\nconst rawCorreo = r['Correo'] || r['Correo electrónico'] || '';\nconst rawArea   = r['Área']   || r['Área/Departamento'] || '';\nconst rawDesc   = r['Descripción'] || r['Motivo'] || '';\n\n// Aplicar sanitización\nconst nombre = sanitizeText(rawNombre);\nconst correo = sanitizeText(rawCorreo);\nconst area   = sanitizeText(rawArea);\nconst descripcion = sanitizeText(rawDesc);\n\n// Participantes\nconst participantes = Number(\n  r['N° Participantes'] ?? r['Número de participantes'] ?? 0\n) || 0;\n\n// ========= 3) FECHA / HORA Y RANGO =========\n\nconst rawFecha = r['Fecha'] ?? r['Fecha de la reunión'] ?? r['fecha'] ?? r['Date'] ?? r['Marca temporal'] ?? null;\nconst fecha = parseFechaSheets(rawFecha) || new Date();\n\nconst hi = parseHora(r['Inicio'] ?? r['Hora de inicio']);\nconst hf = parseHora(r['Fin']    ?? r['Hora de Termino']);\n\nconst yyyy = fecha.getFullYear();\nconst mm   = pad(fecha.getMonth()+1);\nconst dd   = pad(fecha.getDate());\n\nconst meses = [\n  'enero','febrero','marzo','abril','mayo','junio',\n  'julio','agosto','septiembre','octubre','noviembre','diciembre'\n];\n\n// Ej: “20 de septiembre del 2025”\nconst fechaLarga = `${dd} de ${meses[fecha.getMonth()]} del ${yyyy}`;\n\nconst tzOffset = '-03:00';\nconst startIso = `${yyyy}-${mm}-${dd}T${hi.hh}:${hi.mm}:00${tzOffset}`;\nconst endIso   = `${yyyy}-${mm}-${dd}T${hf.hh}:${hf.mm}:00${tzOffset}`;\n\n// ========= 4) REGLAS DE NEGOCIO =========\nconst errores = [];\n\n// Email correcto\nif (!isValidEmail(correo)) {\n  errores.push('Email inválido');\n}\n\n// Fecha no pasada (comparando solo día)\nconst hoy = new Date();\nhoy.setHours(0,0,0,0);\nconst fechaDia = new Date(fecha.getTime());\nfechaDia.setHours(0,0,0,0);\nif (fechaDia < hoy) {\n  errores.push('Fecha en el pasado');\n}\n\n// Participantes > 0\nif (!Number.isFinite(participantes) || participantes <= 0) {\n  errores.push('Número de participantes inválido');\n}\n\n// Aquí podrías agregar más reglas de negocio si quieres…\n// if (otraReglaMala) errores.push('mensaje');\n\n// Resultado de validación\nconst isValid = errores.length === 0;\n\n// ID de reserva\nconst ReservaID = `res-${Date.now()}-${Math.random().toString(16).slice(2,8)}`;\n\n// ========= 5) SALIDA =========\nreturn [{\n  json: {\n    startIso,\n    endIso,\n    summary: `Reunión: ${nombre}`,\n    description: `Área: ${area} - ${descripcion}`,\n    requesterEmail: correo,\n    participantes,\n\n    // para la hoja Registro / metadata\n    nombre,\n    correo,\n    area,\n    fechaStr: `${dd}-${mm}-${yyyy}`,\n    fechaLarga,\n    inicioStr: `${hi.hh}:${hi.mm}`,\n    finStr: `${hf.hh}:${hf.mm}`,\n    ReservaID,\n\n    // flags de validación\n    isValid,\n    errores\n  }\n}];\n"
+        "jsCode": "// --- Helpers de sanitización ---\nfunction sanitizeText(str = \"\") {\n  if (!str) return \"\";\n  str = String(str).replace(/<[^>]*>/g, \"\");        // Quita HTML/script\n  return str.replace(/\\s+/g, \" \").trim();           // Espacios normales\n}\n\n// Solo para nombres de personas\nfunction sanitizeNombre(str = \"\") {\n  if (!str) return \"\";\n  str = String(str).replace(/<[^>]*>/g, \"\");        // Quita tags\n  // Solo letras, espacios y acentos básicos\n  str = str.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]/g, \"\");\n  return str.replace(/\\s+/g, \" \").trim();\n}\n\n// Convierte string tipo \"25/12/2025\" o \"25-12-2025\" a Date\nfunction parseFecha(fechaRaw) {\n  if (!fechaRaw) return null;\n\n  if (typeof fechaRaw === \"number\") {\n    const epoch = (fechaRaw - 25569) * 86400 * 1000;\n    return new Date(epoch);\n  }\n\n  const s = String(fechaRaw).trim();\n\n  // Intento directo\n  let d = new Date(s);\n  if (!isNaN(d.getTime())) return d;\n\n  // DD/MM/YYYY o DD-MM-YYYY\n  const m = s.match(/^(\\d{1,2})[\\/-](\\d{1,2})[\\/-](\\d{4})$/);\n  if (m) {\n    const [_, dd, mm, yyyy] = m;\n    d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));\n    if (!isNaN(d.getTime())) return d;\n  }\n\n  return null;\n}\n\n// Convierte \"10:40:00 a.m.\" o \"12:00 p.m.\" a \"HH:mm\" en 24h\nfunction parseHora(raw) {\n  if (!raw) return \"\";\n  let s = String(raw).toLowerCase().trim();\n\n  // 10:40:00 a.m. / 10:40 a.m. / 10:40\n  const m = s.match(/^(\\d{1,2}):(\\d{2})(?::\\d{2})?\\s*(a\\.m\\.|p\\.m\\.)?$/);\n  if (!m) return \"\";\n\n  let h = Number(m[1]);\n  const min = m[2];\n  const suf = m[3];\n\n  if (suf) {\n    if (suf.includes(\"p\") && h < 12) h += 12; // 1pm–11pm\n    if (suf.includes(\"a\") && h === 12) h = 0; // 12am → 00\n  }\n\n  return `${String(h).padStart(2, \"0\")}:${min}`;\n}\n\n// --- Inicio lógica principal ---\nconst r = $json;\nconst errores = [];\n\n// Campos crudos EXACTAMENTE como vienen del formulario (según tu captura)\nconst rawNombre        = r[\"Nombre\"] || r[\"nombre\"] || \"\";\nconst rawCorreo        = r[\"Correo electrónico\"] || r[\"Correo\"] || r[\"email\"] || \"\";\nconst rawArea          = r[\"Área/Departamento\"] || r[\"Área\"] || r[\"Area\"] || \"\";\nconst rawDescripcion   = r[\"Descripción\"] || r[\"Descripcion\"] || r[\"Motivo\"] || \"\";\nconst rawFecha         = r[\"Fecha de la reunión\"] || r[\"Fecha\"] || r[\"fecha\"] || r[\"Día\"] || \"\";\nconst rawInicio        = r[\"Hora de inicio\"] || r[\"Hora inicio\"] || r[\"Inicio\"] || r[\"inicio\"] || \"\";\nconst rawFin           = r[\"Hora de Termino\"] || r[\"Hora de fin\"] || r[\"Hora fin\"] || r[\"Fin\"] || r[\"termino\"] || \"\";\nconst rawParticipantes =\n  r[\"Número de participantes\"] ||\n  r[\"N° Participantes\"] ||\n  r[\"Nº Participantes\"] ||\n  r[\"Participantes\"] ||\n  r[\"capacidad\"] ||\n  \"\";\n\n// Sanitización\nconst nombre      = sanitizeNombre(rawNombre);\nconst correo      = sanitizeText(rawCorreo);\nconst area        = sanitizeText(rawArea);\nconst descripcion = sanitizeText(rawDescripcion);\n\n// Validación correo\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nif (!correo || !emailRegex.test(correo)) {\n  errores.push(\"EMAIL INVÁLIDO\");\n}\n\n// Fecha\nconst fechaObj = parseFecha(rawFecha);\nif (!fechaObj) {\n  errores.push(\"FECHA INVÁLIDA\");\n}\n\n// Fecha no pasada (si se pudo parsear)\nlet fechaStr = \"\";\nlet fechaLarga = \"\";\nif (fechaObj) {\n  const hoy = new Date();\n  hoy.setHours(0, 0, 0, 0);\n  const fechaSolo = new Date(fechaObj);\n  fechaSolo.setHours(0, 0, 0, 0);\n  if (fechaSolo < hoy) {\n    errores.push(\"FECHA EN EL PASADO\");\n  }\n\n  const yyyy = fechaObj.getFullYear();\n  const mm = String(fechaObj.getMonth() + 1).padStart(2, \"0\");\n  const dd = String(fechaObj.getDate()).padStart(2, \"0\");\n\n  fechaStr = `${dd}-${mm}-${yyyy}`;\n  fechaLarga = fechaObj.toLocaleDateString(\"es-CL\", {\n    day: \"numeric\",\n    month: \"long\",\n    year: \"numeric\",\n  });\n}\n\n// Horas\nconst inicioStr = parseHora(rawInicio);\nconst finStr    = parseHora(rawFin);\n\nlet startIso = null;\nlet endIso   = null;\n\nif (fechaObj && inicioStr && finStr) {\n  const yyyy = fechaObj.getFullYear();\n  const mm = String(fechaObj.getMonth() + 1).padStart(2, \"0\");\n  const dd = String(fechaObj.getDate()).padStart(2, \"0\");\n\n  startIso = `${yyyy}-${mm}-${dd}T${inicioStr}:00-03:00`;\n  endIso   = `${yyyy}-${mm}-${dd}T${finStr}:00-03:00`;\n}\n\n// Participantes\nlet participantes = Number(rawParticipantes);\nif (isNaN(participantes) || participantes <= 0) {\n  errores.push(\"NÚMERO DE PARTICIPANTES INVÁLIDO\");\n}\n\n// Summary / descripción para Calendar\nconst summary = `Reunión: ${nombre}`;\nconst description =\n  `Área: ${area} -\\nMotivo: ${descripcion}\\nParticipantes: ${participantes}`;\n\n// ID de reserva\nconst ReservaID = `res-${Date.now()}${Math.floor(Math.random() * 1000)}`;\n\n// isValid\nconst isValid = errores.length === 0;\n\nreturn [\n  {\n    json: {\n      startIso,\n      endIso,\n      summary,\n      description,\n\n      requesterEmail: correo,\n      participantes,\n      nombre,\n      correo,\n      area,\n      fechaStr,\n      fechaLarga,\n      inicioStr,\n      finStr,\n      ReservaID,\n\n      isValid,\n      errores,\n    },\n  },\n];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -799,9 +818,19 @@
               "leftValue": "={{ $json.isValid }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b5d261ee-3dae-4b16-9900-a18f84b4b2e0",
+              "leftValue": false,
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
               }
             }
           ],
@@ -903,10 +932,10 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "FechaHora": "=={{ new Date().toISOString() }}",
-            "Errores": "=={{ $json.errores.join(' | ') }}",
-            "ID_Reserva": "=={{ $json.ReservaID }}",
-            "Email": "=={{ $json.correo }}",
+            "FechaHora": "={{ new Date().toISOString() }}",
+            "Errores": "={{ $json.errores.join(' | ') }}",
+            "ID_Reserva": "={{ $json.ReservaID }}",
+            "Email": "={{ $json.correo }}",
             "Origen": "\"Formulario\""
           },
           "matchingColumns": [],
@@ -1013,17 +1042,16 @@
     },
     {
       "parameters": {
-        "sendTo": "={{ $json.correo || $json.requesterEmail }}",
+        "sendTo": "={{ $json.Email }}",
         "subject": "Error en tu solicitud de reserva",
-        "emailType": "text",
-        "message": "=Hola,  Tu solicitud de reserva no pudo ser procesada porque se detectaron uno o más errores en los datos ingresados.  Errores detectados: {{ $json.errores.join(', ') }}  Por favor revisa los datos e intenta enviar nuevamente tu solicitud.  Saludos, Sistema de Reservas",
+        "message": "=Hola,<br><br>\nTu solicitud de reserva no pudo ser procesada porque se detectaron uno o más errores en los datos ingresados.<br><br>\n{{\n(() => {\n  const raw = Array.isArray($json.errores) && $json.errores.length\n    ? $json.errores\n    : [String($json.Errores || $json.errores || 'Error no especificado')];\n\n  const cleaned = raw\n    .map(e => String(e).replace(/^=/, '').trim().toUpperCase())\n    .filter(e => e.length > 0);\n\n  const text = cleaned.join(' | ');\n  return `<strong style=\"color:red;\">ERRORES DETECTADOS: ${text}</strong><br><br>`;\n})()\n}}\nPor favor revisa los datos e intenta enviar nuevamente tu solicitud.<br><br>\nSaludos,<br>\nSistema de Reservas\n",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -1488,
-        640
+        -1472,
+        704
       ],
       "id": "76fa2f1a-81f8-43bd-a32e-5936c2af196f",
       "name": "Send a message2",
@@ -1381,8 +1409,9 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b7fe8c4c-ac5f-4de2-af6f-0a5f122fbc76",
+  "versionId": "8b5164cd-38e4-4a70-beca-6c28ac1bcf4d",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "605a3cd9f00bba5091dd8352caa8e8a6f52dbf714d692df2d04e4d5949acc445"
   },
   "id": "oaNLU5qLRf8skgOp",

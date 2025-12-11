@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "// ===================== NORMALIZAR + SANITIZAR DATOS =====================\n// Compatible con Webhook + HTML Alternativas + Merge directo\n// Formato: hora 24h, fecha DD/MM/YYYY\n\nconst TZ = 'America/Santiago';\nconst q = $json;\n\n// Detecta si vienen dentro de \"query\" (Webhook)\nconst src = q.query ? q.query : q;\n\n// ---------- Helpers ----------\n\n// Convierte cualquier valor a ISO (si puede)\nfunction toISO(val) {\n  if (!val) return '';\n  const d = new Date(val);\n  return isNaN(d) ? String(val) : d.toISOString();\n}\n\n// Convierte un datetime a partes locales (fecha y hora)\nfunction toLocalParts(dtStr) {\n  if (!dtStr) return { fecha: '', hora: '' };\n  const d = new Date(dtStr);\n  if (isNaN(d)) return { fecha: '', hora: '' };\n\n  // Fecha en formato DD/MM/YYYY\n  const dia = String(d.getDate()).padStart(2, '0');\n  const mes = String(d.getMonth() + 1).padStart(2, '0');\n  const anio = d.getFullYear();\n  const fecha = `${dia}/${mes}/${anio}`;\n\n  // Hora en formato 24h (HH:mm)\n  const hora = d.toLocaleTimeString('es-CL', {\n    timeZone: TZ,\n    hour: '2-digit',\n    minute: '2-digit',\n    hour12: false, // <- evita AM/PM\n  });\n\n  return { fecha, hora };\n}\n\n// Sanitizador básico de texto: elimina tags HTML y espacios raros\nfunction sanitizeText(value) {\n  if (value == null) return '';\n  let s = String(value);\n\n  // elimina cualquier etiqueta <...>\n  s = s.replace(/<[^>]*>/g, '');\n\n  // normaliza espacios\n  s = s.replace(/\\s+/g, ' ').trim();\n\n  return s;\n}\n\n// Sanitizador simple para email (solo trim, no tocamos @ ni dominio)\nfunction sanitizeEmail(value) {\n  if (!value) return '';\n  return String(value).trim();\n}\n\n// ---------- Calcular fechas legibles ----------\n\nconst startIso = toISO(src.start);\nconst endIso   = toISO(src.end);\n\nconst { fecha: fechaLarga, hora: inicioStr } = toLocalParts(startIso);\nconst { hora: finStr } = toLocalParts(endIso);\n\n// ---------- Normalizar + SANITIZAR campos del webhook ----------\n\n// Identificadores y correo\nconst reservaId = src.reservaId || src.ReservID || src.ReservaID || src.reservationId || 'SIN-ID';\nconst email     = sanitizeEmail(src.email || src.correo || src.to || 'sin-correo@demo.local');\n\n// Datos del solicitante\nconst nombre        = sanitizeText(src.nombre || src.solicitante || '');\nconst area          = sanitizeText(src.area || '');\nconst participantes = Number(src.participantes || 0);\nconst descripcion   = sanitizeText(src.descripcion || '');\n\n// Información del evento\nconst summary   = sanitizeText(src.summary || 'Reunión');\nconst calendarId= src.calendarId || '';\nconst roomName  = sanitizeText(src.room || '');\n\n// ---------- Resultado unificado ----------\n\nreturn [{\n  json: {\n    // --- Identificadores y correo ---\n    reservaId,\n    email,\n\n    // --- Datos del solicitante ---\n    nombre,\n    area,\n    participantes,\n    descripcion,\n\n    // --- Información de evento ---\n    summary,\n    calendarId,\n    roomName,\n\n    // --- Fechas ISO y texto ---\n    startIso,\n    endIso,\n    fechaLarga,  // formato DD/MM/YYYY\n    inicioStr,   // HH:mm\n    finStr       // HH:mm\n  }\n}];\n// ===================== NORMALIZAR + SANITIZAR DATOS =====================\n// Compatible con Webhook + HTML Alternativas + Merge directo\n// Formato: hora 24h, fecha DD/MM/YYYY\n\nconst TZ = 'America/Santiago';\nconst q = $json;\n\n// Detecta si vienen dentro de \"query\" (Webhook)\nconst src = q.query ? q.query : q;\n\n// ---------- Helpers ----------\n\n// Convierte cualquier valor a ISO (si puede)\nfunction toISO(val) {\n  if (!val) return '';\n  const d = new Date(val);\n  return isNaN(d) ? String(val) : d.toISOString();\n}\n\n// Convierte un datetime a partes locales (fecha y hora)\nfunction toLocalParts(dtStr) {\n  if (!dtStr) return { fecha: '', hora: '' };\n  const d = new Date(dtStr);\n  if (isNaN(d)) return { fecha: '', hora: '' };\n\n  // Fecha en formato DD/MM/YYYY\n  const dia = String(d.getDate()).padStart(2, '0');\n  const mes = String(d.getMonth() + 1).padStart(2, '0');\n  const anio = d.getFullYear();\n  const fecha = `${dia}/${mes}/${anio}`;\n\n  // Hora en formato 24h (HH:mm)\n  const hora = d.toLocaleTimeString('es-CL', {\n    timeZone: TZ,\n    hour: '2-digit',\n    minute: '2-digit',\n    hour12: false, // <- evita AM/PM\n  });\n\n  return { fecha, hora };\n}\n\n// Sanitizador básico de texto: elimina tags HTML y espacios raros\nfunction sanitizeText(value) {\n  if (value == null) return '';\n  let s = String(value);\n\n  // elimina cualquier etiqueta <...>\n  s = s.replace(/<[^>]*>/g, '');\n\n  // normaliza espacios\n  s = s.replace(/\\s+/g, ' ').trim();\n\n  return s;\n}\n\n// Sanitizador simple para email (solo trim, no tocamos @ ni dominio)\nfunction sanitizeEmail(value) {\n  if (!value) return '';\n  return String(value).trim();\n}\n\n// ---------- Calcular fechas legibles ----------\n\nconst startIso = toISO(src.start);\nconst endIso   = toISO(src.end);\n\nconst { fecha: fechaLarga, hora: inicioStr } = toLocalParts(startIso);\nconst { hora: finStr } = toLocalParts(endIso);\n\n// ---------- Normalizar + SANITIZAR campos del webhook ----------\n\n// Identificadores y correo\nconst reservaId = src.reservaId || src.ReservID || src.ReservaID || src.reservationId || 'SIN-ID';\nconst email     = sanitizeEmail(src.email || src.correo || src.to || 'sin-correo@demo.local');\n\n// Datos del solicitante\nconst nombre        = sanitizeText(src.nombre || src.solicitante || '');\nconst area          = sanitizeText(src.area || '');\nconst participantes = Number(src.participantes || 0);\nconst descripcion   = sanitizeText(src.descripcion || '');\n\n// Información del evento\nconst summary   = sanitizeText(src.summary || 'Reunión');\nconst calendarId= src.calendarId || '';\nconst roomName  = sanitizeText(src.room || '');\n\n// ---------- Resultado unificado ----------\n\nreturn [{\n  json: {\n    // --- Identificadores y correo ---\n    reservaId,\n    email,\n\n    // --- Datos del solicitante ---\n    nombre,\n    area,\n    participantes,\n    descripcion,\n\n    // --- Información de evento ---\n    summary,\n    calendarId,\n    roomName,\n\n    // --- Fechas ISO y texto ---\n    startIso,\n    endIso,\n    fechaLarga,  // formato DD/MM/YYYY\n    inicioStr,   // HH:mm\n    finStr       // HH:mm\n  }\n}];\n"
+        "jsCode": "// ===================== NORMALIZAR + SANITIZAR DATOS =====================\n// Compatible con Webhook + HTML Alternativas + Merge directo\n// Formato: hora 24h, fecha DD/MM/YYYY\n\nconst TZ = 'America/Santiago';\nconst q = $json;\n\n// Detecta si vienen dentro de \"query\" (Webhook)\nconst src = q.query ? q.query : q;\n\n// ---------- Helpers ----------\n\n// Convierte cualquier valor a ISO (si puede)\nfunction toISO(val) {\n  if (!val) return '';\n  const d = new Date(val);\n  return isNaN(d) ? String(val) : d.toISOString();\n}\n\n// Convierte un datetime a partes locales (fecha y hora)\nfunction toLocalParts(dtStr) {\n  if (!dtStr) return { fecha: '', hora: '' };\n  const d = new Date(dtStr);\n  if (isNaN(d)) return { fecha: '', hora: '' };\n\n  // Fecha en formato DD/MM/YYYY\n  const dia  = String(d.getDate()).padStart(2, '0');\n  const mes  = String(d.getMonth() + 1).padStart(2, '0');\n  const anio = d.getFullYear();\n  const fecha = `${dia}/${mes}/${anio}`;\n\n  // Hora en formato 24h (HH:mm)\n  const hora = d.toLocaleTimeString('es-CL', {\n    timeZone: TZ,\n    hour: '2-digit',\n    minute: '2-digit',\n    hour12: false,       // <- evita AM/PM\n  });\n\n  return { fecha, hora };\n}\n\n// Sanitizador básico de texto: elimina tags HTML y espacios raros\nfunction sanitizeText(value) {\n  if (value == null) return '';\n  let s = String(value);\n\n  // elimina cualquier etiqueta <...>\n  s = s.replace(/<[^>]*>/g, '');\n\n  // normaliza espacios\n  s = s.replace(/\\s+/g, ' ').trim();\n\n  return s;\n}\n\n// Sanitizador simple para email (solo trim, no tocamos @ ni dominio)\nfunction sanitizeEmail(value) {\n  if (!value) return '';\n  return String(value).trim();\n}\n\n// ---------- Calcular fechas legibles ----------\n\nconst startIso = toISO(src.start);\nconst endIso   = toISO(src.end);\n\nconst { fecha: fechaLarga, hora: inicioStr } = toLocalParts(startIso);\nconst { hora: finStr } = toLocalParts(endIso);\n\n// ---------- Normalizar + SANITIZAR campos del webhook ----------\n\n// Identificadores y correo\nconst reservaId = src.reservaId\n  || src.ReservID\n  || src.ReservaID\n  || src.reservationId\n  || 'SIN-ID';\n\nconst email = sanitizeEmail(\n  src.email\n  || src.correo\n  || src.to\n  || 'sin-correo@demo.local'\n);\n\n// Datos del solicitante\nconst nombre        = sanitizeText(src.nombre || src.solicitante || '');\nconst area          = sanitizeText(src.area || '');\nconst participantes = Number(src.participantes || 0);\nconst descripcion   = sanitizeText(src.descripcion || '');\n\n// Información del evento\nconst summary    = sanitizeText(src.summary || 'Reunión');\nconst calendarId = src.calendarId || '';\nconst roomName   = sanitizeText(src.room || '');\n\n// ---------- Resultado unificado ----------\n\nreturn [{\n  json: {\n    // --- Identificadores y correo ---\n    reservaId,\n    email,\n\n    // --- Datos del solicitante ---\n    nombre,\n    area,\n    participantes,\n    descripcion,\n\n    // --- Información de evento ---\n    summary,\n    calendarId,\n    roomName,\n\n    // --- Fechas ISO y texto ---\n    startIso,\n    endIso,\n    fechaLarga,  // DD/MM/YYYY\n    inicioStr,   // HH:mm\n    finStr       // HH:mm\n  }\n}];\n"
       },
       "id": "3451b991-1c64-4feb-ac2a-b49db3467dc1",
       "name": "Normalizar Datos",
@@ -63,19 +63,19 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Sala asignada": "=Sala {{ $json.organizer.displayName }}",
+            "Sala asignada": "=Sala {{ $json[\"Sala asignada\"] }}",
             "Estado": "=Confirmada",
             "row_number": 0,
-            "horaInicio": "={{ $json.inicioStr }}",
-            "horaTermino": "={{ $json.finStr }}",
-            "Fecha": "={{ $json.fechaLarga }}",
-            "Correo": "={{ $json.email }}",
-            "Nombre": "={{ $json.nombre }}",
-            "Area/Departamento": "={{ $json.area }}",
-            "N° Participantes": "={{ $json.participantes }}",
-            "ID_Reserva": "={{ $json.reservaId }}",
-            "ID_Sala": "={{ $json.calendarId }}",
-            "Event_ID": "={{ $json.id }}"
+            "horaInicio": "={{ $json.horaInicio }}",
+            "horaTermino": "={{ $json.horaTermino }}",
+            "Fecha": "={{ $json.Fecha }}",
+            "Correo": "={{ $json.Correo }}",
+            "Nombre": "={{ $json.Nombre }}",
+            "N° Participantes": "={{ $json[\"N° Participantes\"] }}",
+            "ID_Reserva": "={{ $json.ID_Reserva }}",
+            "ID_Sala": "={{ $json.ID_Sala }}",
+            "Event_ID": "={{ $json.Event_ID }}",
+            "Area": "={{ $json.Area }}"
           },
           "matchingColumns": [
             "ID_Reserva"
@@ -102,8 +102,8 @@
               "removed": false
             },
             {
-              "id": "Area/Departamento",
-              "displayName": "Area/Departamento",
+              "id": "Area",
+              "displayName": "Area",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -152,16 +152,6 @@
               "removed": false
             },
             {
-              "id": "ID_Reserva",
-              "displayName": "ID_Reserva",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
               "id": "Estado",
               "displayName": "Estado",
               "required": false,
@@ -200,6 +190,16 @@
               "removed": false
             },
             {
+              "id": "ID_Reserva",
+              "displayName": "ID_Reserva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
               "id": "row_number",
               "displayName": "row_number",
               "required": false,
@@ -221,8 +221,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -368,
-        176
+        240,
+        -64
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -244,8 +244,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        32,
-        176
+        480,
+        -64
       ],
       "webhookId": "716eeaa9-19af-4576-b90e-a7fbdcd9c05e",
       "credentials": {
@@ -265,7 +265,7 @@
       "typeVersion": 3.2,
       "position": [
         -592,
-        176
+        48
       ],
       "id": "152b3181-5c0b-4801-b0be-39219786a4a9",
       "name": "Merge"
@@ -337,7 +337,7 @@
           "values": [
             {
               "lookupColumn": "ID_Reserva",
-              "lookupValue": "=={{ $json.reservaId }}"
+              "lookupValue": "={{ $json.reservaId }}"
             }
           ]
         },
@@ -346,8 +346,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1040,
-        448
+        -992,
+        416
       ],
       "id": "16320c58-231b-4341-a1b1-4317791c8f3d",
       "name": "Buscar Reserva",
@@ -364,20 +364,20 @@
       "typeVersion": 3.2,
       "position": [
         -576,
-        448
+        320
       ],
       "id": "c6380d66-a30d-498b-9419-101a1f1c8321",
       "name": "Merge Datos + Reserva"
     },
     {
       "parameters": {
-        "jsCode": "const datos = $json;\nconst errores = [];\n\n// ID desde hoja y desde webhook\nconst idSheet = (datos.ID_Reserva || datos.ReservaID || datos.reservaIdHoja || '').toString().trim();\nconst idWebhook = (datos.reservaIdWebhook || datos.reservaId || '').toString().trim();\n\n// Correos normalizados\nconst emailSheet = (datos.Correo || datos.correo || '').toString().trim().toLowerCase();\nconst emailWebhook = (datos.emailWebhook || datos.email || '').toString().trim().toLowerCase();\n\n// 1) La reserva debe existir\nif (!idSheet) {\n  errores.push('Reserva no encontrada en la hoja Registro');\n}\n\n// 2) El ID de la reserva debe coincidir\nif (idSheet && idWebhook && idSheet !== idWebhook) {\n  errores.push('El ID de reserva no coincide con el de la URL');\n}\n\n// 3) El correo debe coincidir (reserva asociada al mismo usuario)\nif (emailSheet && emailWebhook && emailSheet !== emailWebhook) {\n  errores.push('Reserva no asociada a este usuario');\n}\n\n// 4) No permitir operar reservas ya canceladas\nif (datos.Estado && datos.Estado.toString().toLowerCase() === 'cancelada') {\n  errores.push('La reserva ya está cancelada');\n}\n\nconst isValid = errores.length === 0;\n\nreturn [{\n  json: {\n    ...datos,\n    isValid,\n    errores\n  }\n}];\n"
+        "jsCode": "// ================== VALIDAR RESERVA USUARIO ==================\n// Input 0: viene del Merge / evento (si lo estás usando)\n// Input 1: viene del Merge Datos + Reserva (fila Registro + normalizado)\n\n// Items que llegan por cada entrada\nconst eventos   = $input.all(0);   // puede venir vacío y no pasa nada\nconst registros = $input.all(1);   // aquí viene la fila de la hoja\n\nconst evento   = eventos[0]?.json || {};\nconst registro = registros[0]?.json || {};\n\n// Traemos la sala limpia desde \"Normalizar Datos\"\nconst datosLink = $node[\"Normalizar Datos\"].json || {};\n\n// Y el id de evento desde \"Crear Evento Google Calendar\"\nconst datosEvento = $node[\"Crear Evento Google Calendar\"].json || {};\n\nconst errores = [];\nlet isValid = true;\n\n// --- Regla simple: si no hay ID_Reserva en la hoja, algo está mal ---\nif (!registro.ID_Reserva) {\n  isValid = false;\n  errores.push('RESERVA NO ENCONTRADA EN LA HOJA REGISTRO');\n}\n\n// (Opcional) Aquí podrías validar correo, estado, etc. si quieres.\n// Por ahora dejamos sólo que exista la reserva.\n\n// --- Sala asignada ---\n// Siempre preferimos la sala del link (Normalizar Datos)\n// y NO la de la hoja, que trae \"Sala \" en blanco.\nconst salaAsignada =\n  datosLink.roomName              // ej: \"Sala 101\"\n  || registro[\"Sala asignada\"]    // por si acaso\n  || evento.roomName\n  || '';\n\n// --- Event_ID ---\n// Guardamos el id del evento de Calendar si existe\nconst eventId = datosEvento.id || registro.Event_ID || '';\n\n// Devolvemos todo unificado\nreturn [\n  {\n    json: {\n      // Datos del link / normalizados\n      ...datosLink,\n      // Datos de la hoja\n      ...registro,\n      // Datos del evento (por si los quieres usar después)\n      ...evento,\n\n      // Campos corregidos\n      \"Sala asignada\": salaAsignada,\n      Event_ID: eventId,\n\n      // Resultado de validación\n      isValid,\n      errores,\n    },\n  },\n];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -352,
-        448
+        -272,
+        128
       ],
       "id": "7b44d821-0750-4aa1-8175-6bcf030da87c",
       "name": "ValidarReservaUsuario"
@@ -394,12 +394,11 @@
           "conditions": [
             {
               "id": "9020dd6f-e89f-466b-8cb8-696edf587e46",
-              "leftValue": "=={{ $json.isValid }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.isValid.toString() }}",
+              "rightValue": "true",
               "operator": {
                 "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
+                "operation": "equals"
               }
             }
           ],
@@ -410,11 +409,114 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        48,
-        448
+        -16,
+        64
       ],
       "id": "a412f3ea-971a-44d8-8589-89a0247497e6",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw",
+          "mode": "list",
+          "cachedResultName": "Registro Solicitud",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 319241814,
+          "mode": "list",
+          "cachedResultName": "Logs_Intentos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n66HEZRlQ2SeqWs0UVmgNoBYkN7gZvjlFvJYdpwwDlw/edit#gid=319241814"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FechaHora": "={{ $json.fechaLarga }}",
+            "Email": "={{ $json.email }}",
+            "ID_Reserva": "={{ $json.reservaId }}",
+            "Errores": "={{ Array.isArray($json.errores) ? $json.errores.join(' | ') : ($json.errores || '') }}\n",
+            "Origen": "ConfirmacionDeSala"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FechaHora",
+              "displayName": "FechaHora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID_Reserva",
+              "displayName": "ID_Reserva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Errores",
+              "displayName": "Errores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Payload",
+              "displayName": "Payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        160
+      ],
+      "id": "740d24b1-fd30-46e9-a02d-b4a0c4a7f0d5",
+      "name": "Log Confirmación Fallida",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YW4UkII7eEBygXxR",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -466,7 +568,7 @@
       "main": [
         [
           {
-            "node": "Actualizar Hoja Registro",
+            "node": "ValidarReservaUsuario",
             "type": "main",
             "index": 0
           }
@@ -532,13 +634,33 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Hoja Registro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Confirmación Fallida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "versionId": "1c7553b8-33a5-45df-871c-6380e599f1c6",
+  "versionId": "d19890f9-4a3a-444f-91c4-ef4cae3bcfa9",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "605a3cd9f00bba5091dd8352caa8e8a6f52dbf714d692df2d04e4d5949acc445"
