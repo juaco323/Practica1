@@ -1044,7 +1044,7 @@
       "parameters": {
         "sendTo": "={{ $json.Email }}",
         "subject": "Error en tu solicitud de reserva",
-        "message": "=Hola,<br><br>\nTu solicitud de reserva no pudo ser procesada porque se detectaron uno o más errores en los datos ingresados.<br><br>\n{{\n(() => {\n  const raw = Array.isArray($json.errores) && $json.errores.length\n    ? $json.errores\n    : [String($json.Errores || $json.errores || 'Error no especificado')];\n\n  const cleaned = raw\n    .map(e => String(e).replace(/^=/, '').trim().toUpperCase())\n    .filter(e => e.length > 0);\n\n  const text = cleaned.join(' | ');\n  return `<strong style=\"color:red;\">ERRORES DETECTADOS: ${text}</strong><br><br>`;\n})()\n}}\nPor favor revisa los datos e intenta enviar nuevamente tu solicitud.<br><br>\nSaludos,<br>\nSistema de Reservas\n",
+        "message": "=<div style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333333; max-width: 600px; margin: auto; border: 1px solid #dddddd; border-radius: 8px; overflow: hidden;\">\n\n  <!-- Encabezado rojo -->\n  <div style=\"background-color: #e53935; color: #ffffff; padding: 20px; text-align: center;\">\n    <h1 style=\"margin: 0; font-size: 24px;\">❌ Error en tu Solicitud de Reserva</h1>\n    <p style=\"margin: 4px 0 0; font-size: 14px;\">No fue posible procesar los datos ingresados</p>\n  </div>\n\n  <!-- Cuerpo -->\n  <div style=\"padding: 20px;\">\n    <p>Hola,</p>\n    <p>\n      Tu solicitud no pudo ser procesada debido a uno o más errores en la información enviada.\n    </p>\n\n    <h2 style=\"color: #e53935; font-size: 18px; border-bottom: 1px solid #eeeeee; padding-bottom: 5px;\">\n      Detalles del Error\n    </h2>\n\n    <!-- BLOQUE DE ERRORES CON TU MISMO SCRIPT -->\n    <div style=\"padding: 12px; background-color: #ffebee; border: 1px solid #ffcdd2; border-radius: 6px; color: #b71c1c; font-weight: bold;\">\n      {{\n        (() => {\n          const raw = Array.isArray($json.errores) && $json.errores.length\n            ? $json.errores\n            : [String($json.Errores || $json.errores || 'Error no especificado')];\n\n          const cleaned = raw\n            .map(e => String(e).replace(/^=/, '').trim().toUpperCase())\n            .filter(e => e.length > 0);\n\n          const text = cleaned.join(' | ');\n          return `ERRORES DETECTADOS: ${text}`;\n        })()\n      }}\n    </div>\n\n    <p style=\"margin-top: 18px;\">\n      Por favor revisa la información e intenta enviar nuevamente tu solicitud.\n    </p>\n\n    <p style=\"margin-top: 20px;\">\n      Saludos,<br>\n      <strong>Sistema de Reservas</strong>\n    </p>\n  </div>\n\n  <!-- Footer -->\n  <div style=\"background-color: #f4f4f4; padding: 15px; text-align: center; border-top: 1px solid #dddddd;\">\n    <p style=\"margin: 0; font-size: 12px; color: #666666;\">\n      © 2025 — Sistema Automatizado de Reservas\n    </p>\n  </div>\n\n</div>\n",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -1409,7 +1409,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8b5164cd-38e4-4a70-beca-6c28ac1bcf4d",
+  "versionId": "f14286ff-06d2-4963-8022-824f37076872",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "605a3cd9f00bba5091dd8352caa8e8a6f52dbf714d692df2d04e4d5949acc445"
